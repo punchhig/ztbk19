@@ -5,26 +5,158 @@ date: "7/23/2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r institute, include=FALSE}
+
+library(plyr)
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(readxl)
+
+setwd(C:/ZeroTB)
+getwd()
+x=read_excel("/GTCV 2018_CONTACT_TRACE.xl")
+
+##Insitute variable renaming
+x=read.csv()
+x$institute[x$institute==]<-1
+x$institute[x$institute==]<-2
+x$institute[x$institute=="GTCV"]<-3
+x$institute[x$institute==GTCV]<-4
+x$institute[x$institute==GTCV]<-5
+x$institute[x$institute==GTCV]<-6
+x$institute[x$institute==GTCV]<-7
+x$institute[x$institute==GTCV]<-8
+x$institute[x$institute==GTCV]<-9
+x$institute[x$institute==GTCV]<-10
+x$institute[x$institute==GTCV]<-11
+x$institute[x$institute==GTCV]<-12
+x$institute[x$institute==GTCV]<-13
+x$institute[x$institute==GTCV]<-14
+x$institute[x$institute==GTCV]<-15
+x$institute[x$institute==GTCV]<-16
+x$institute[x$institute==GTCV]<-17
+x$institute[x$institute==GTCV]<-18
 ```
 
-## R Markdown
+```{r sex}
+x$sex[x$sex=="MALE"]<-1
+x$sex[x$sex=="M"]<-1
+x$sex[x$sex=="male"]<-1
+x$sex[x$sex=="m"]<-1
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+x$sex[x$sex=="FEMALE"]<-2
+x$sex[x$sex=="F"]<-2
+x$sex[x$sex=="female"]<-2
+x$sex[x$sex=="f"]<-2
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r dorm}
+x$dorm[x$dorm="H-1"]->1
+x$dorm[x$dorm="H-2"]->1
+x$dorm[x$dorm="H-3"]->1
+x$dorm[x$dorm="H-4"]->1
+x$dorm[x$dorm="H-5"]->1
+x$dorm[x$dorm="H-6"]->1
+x$dorm[x$dorm="H-7"]->1
+x$dorm[x$dorm="H-8"]->1
+x$dorm[x$dorm="H-9"]->1
+x$dorm[x$dorm="H-10"]->1
+x$dorm[x$dorm="H-11"]->1
+x$dorm[x$dorm="H-12"]->1
+x$dorm[x$dorm="H-13"]->1
+x$dorm[x$dorm="H-14"]->1
+x$dorm[x$dorm="H-15"]->1
+x$dorm[x$dorm="H-16"]->1
+x$dorm[x$dorm="H-17"]->1
+x$dorm[x$dorm="H-18"]->1
+x$dorm[x$dorm="H-19"]->1
+x$dorm[x$dorm="H-20"]->1
+x$dorm[x$dorm="H-21"]->1
+x$dorm[x$dorm="H-22"]->1
+x$dorm[x$dorm="H-23"]->1
+x$dorm[x$dorm="H-24"]->1
+x$dorm[x$dorm="H-25"]->1
+x$dorm[x$dorm="H-26"]->1
+x$dorm[x$dorm="H-27"]->1
+x$dorm[x$dorm="H-28"]->1
+x$dorm[x$dorm="H-29"]->1
+x$dorm[x$dorm="H-30"]->1
+x$dorm[x$dorm="H-31"]->1
+x$dorm[x$dorm="H-32"]->1
+x$dorm[x$dorm="H-33"]->1
+x$dorm[x$dorm="H-34"]->1
+x$dorm[x$dorm="H-35"]->1
+x$dorm[x$dorm="H-36"]->1
+x$dorm[x$dorm="H-37"]->1
+x$dorm[x$dorm="H-38"]->1
+x$dorm[x$dorm="H-39"]->1
+x$dorm[x$dorm="H-40"]->1
+x$dorm[x$dorm="H-41"]->1
+x$dorm[x$dorm="H-42"]->1
+x$dorm[x$dorm="H-43"]->1
+x$dorm[x$dorm="H-44"]->1
+x$dorm[x$dorm="H-45"]->1
+x$dorm[x$dorm="H-46"]->1
+x$dorm[x$dorm="H-47"]->1
+x$dorm[x$dorm="H-48"]->1
+x$dorm[x$dorm="H-48"]->1
+x$dorm[x$dorm="H-50"]->1
+x$dorm[x$dorm=="BH"]->2
+x$dorm[x$dorm=="GH"]->3
+x$dorm[x$dorm=="DS"]->4
+x$dorm[x$dorm=="SQ"]->5
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r occuapation}
+x$occupation[x$occupation=="STUDENT"]->1
+x$occupation[x$occupation=="TEACHER"]->2
+x$occupation[x$occupation=="HEALTH-STAFF"]->3
+x$occupation[x$occupation=="OFFICE-STAFF"]->4
+x$occupation[x$occupation=="HOME-MOTHER"]->5
+x$occupation[x$occupation=="MONK"]->6
+x$occupation[x$occupation=="NUN"]->7
+x$occupation[x$occupation=="COOK"]->8
+x$occupation[x$occupation=="DRIVER"]->9
+x$occupation[x$occupation=="HOME-FATHER"]->10
+```
+
+```{r country, }
+if (x$birth_place==("INDIA","TIBET","NEPAL","BHUTAN")) {
+x$birth_place[x$birth_place=="INDIA"]->1
+  x$birth_place[x$birth_place=="TIBET"]->2
+  x$birth_place[x$birth_place=="NEPAL"]->3
+  x$birth_place[x$birth_place=="BHUTAN"]->4
+} else { replace( how to replace all other here
+```
+
+```{r prev tb}
+x$prev_tb[x$prev_tb=="NO"]->0
+x$prev_tb[x$prev_tb=="YES"]->1
+x$prev_tb[x$prev_tb=="NA"]->NA
+
+```
+
+```{r prev tb type}
+x$prevtb_type[x$prevtb_type=="NON MDR"]->0
+x$prevtb_type[x$prevtb_type=="MDR"]->1
+x$x$prevtb_type[x$prevtb_type=="NA"]->NA
+
+```
+
+```{r seizures}
+x$seizures[x$seizures=="NO"]->0
+x$seizures[x$seizures=="YES"]->1
+```
+
+```{r hepb}
+x$hepb[x$hepb=="NO"]->0
+x$hepb[x$hepb=="YES"]->1
+```
+
+```{r preg_breastfeed}
+x$preg_breastfeed[x$preg_breastfeed=="NO"]->0
+x$preg_breastfeed[x$preg_breastfeed=="PREG"]->1
+x$preg_breastfeed[x$preg_breastfeed=="BREASTFEED"]->2
+```
