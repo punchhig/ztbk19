@@ -122,13 +122,13 @@ x$occupation[x$occupation=="DRIVER"]->9
 x$occupation[x$occupation=="HOME-FATHER"]->10
 ```
 
-```{r country, }
+```{ country}
 if (x$birth_place==("INDIA","TIBET","NEPAL","BHUTAN")) {
 x$birth_place[x$birth_place=="INDIA"]->1
   x$birth_place[x$birth_place=="TIBET"]->2
   x$birth_place[x$birth_place=="NEPAL"]->3
   x$birth_place[x$birth_place=="BHUTAN"]->4
-} else { replace( how to replace all other here
+} else { replace( how to replace all other here)
 ```
 
 ```{r prev tb}
@@ -160,3 +160,82 @@ x$preg_breastfeed[x$preg_breastfeed=="NO"]->0
 x$preg_breastfeed[x$preg_breastfeed=="PREG"]->1
 x$preg_breastfeed[x$preg_breastfeed=="BREASTFEED"]->2
 ```
+
+```{r other comorbid}
+x$other_comorbid[x$other_comorbid=="NONE"]->0
+x$other_comorbid[x$other_comorbid=="DM"]->1
+x$other_comorbid[x$other_comorbid=="HTN"]->2
+x$other_comorbid[x$other_comorbid=="DM_HTN"]->3
+x$other_comorbid[x$other_comorbid=="OTHER"]->4
+```
+
+```{r longterm med}
+x$longterm_med[x$longmterm_med=="NONE"]->0
+x$longterm_med[x$longmterm_med=="ANTI-HEPB"]->1
+x$longterm_med[x$longmterm_med=="ANTI_SEIZURE"]->2
+x$longterm_med[x$longmterm_med=="ANTI_DM"]->3
+x$longterm_med[x$longmterm_med=="ANTI-HTN"]->4
+x$longterm_med[x$longmterm_med=="ANTI-DMHTN"]->5
+x$longterm_med[x$longmterm_med=="ANTI-HEPBDM"]->6
+x$longterm_med[x$longmterm_med=="ANTI-HEPHTN"]->7
+x$longterm_med[x$longmterm_med=="ANTI-HEPBSEIZURE"]->8
+x$longterm_med[x$longmterm_med=="ANTI-SEIZUREDM"]->9
+x$longterm_med[x$longmterm_med=="ANTI_SEIZUREHTN"]->10
+x$longterm_med[x$longmterm_med=="OTHER"]->11
+```
+
+```{r eversmoked}
+x$ever_smoked[x$ever_smoked=="NO"]->0
+x$ever_smoked[x$ever_smoked=="YES"]->1
+```
+
+```{r bcg tibetborn}
+x$bcg_tibetborn[x$bcg_tibetborn=="NO"]->0
+x$bcg_tibetborn[x$bcg_tibetborn=="YES"]->1
+```
+
+```{r contact with TB in last two years}
+x$contactsch_2yr[x$contactsch_2yr=="NO"]->0
+x$contactsch_2yr[x$contactsch_2yr=="YES"]->1
+x$contactsch_2yr[x$contactsch_2yr=="UNKNOWN"]->2
+```
+
+```{r drug sensitivity of Tb case at school}
+x$indexcasesch_tbtype[x$indexcasesch_tbtype=="NON MDR"]->0
+x$indexcasesch_tbtype[x$indexcasesch_tbtype=="MDR"]->1
+```
+
+```{r index case at school}
+x$indexcasesch_is[x$indexcasesch_is=="CLASS MATE"]->1
+x$indexcasesch_is[x$indexcasesch_is=="DORM MATE"]->2
+x$indexcasesch_is[x$indexcasesch_is=="CLASSDORM MATE"]->3
+x$indexcasesch_is[x$indexcasesch_is=="SCHOOL STAFF"]->4
+x$indexcasesch_is[x$indexcasesch_is=="FRIEND"]->5
+x$indexcasesch_is[x$indexcasesch_is=="OTHER"]->6
+```
+
+```{r exposed to TB athome}
+x$contacthome_2yr[x$contacthome_2yr=="NO"]->0
+x$contacthome_2yr[x$contacthome_2yr=="YES"]->1
+x$contacthome_2yr[x$contacthome_2yr=="UNKNOWN"]->2
+```
+
+```{r drug sensitivity of the TB case at home}
+x$indexcasehome_tbtype[x$indexcasehome_tbtype=="NON MDR"]->0
+x$indexcasehome_tbtype[x$indexcasehome_tbtype=="MDR"]->1
+```
+
+```{r index case at home}
+
+
+
+
+
+
+
+
+
+
+
+
+
