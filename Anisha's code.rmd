@@ -9,13 +9,44 @@ library(plyr)
 library(readr)
 library(dplyr)
 library(tidyverse)
-library(readxl)
-setwd(C:/ZeroTB)
-getwd()
-x=read_excel("C:/Users/anish/Documents/Zero TB in Kids/GTCV 2018_CONTACT_TRACE.xlsx")
+
+x<-read.csv("C:/Users/anish/Documents/Zero TB in Kids/GTCV 2018_ACTIVE_TB.csv", stringsAsFactors=FALSE, na.strings = TRUE)
 ```
 
-```{r Active Tb Tbinvestigation}
+```{r Active TB Sex}
+x$sex_activetb[x$sex_activetb=="MALE"]<-1
+x$sex_activetb[x$sex_activetb=="M"]<-1
+x$sex_activetb[x$sex_activetb=="male"]<-1
+x$sex_activetb[x$sex_activetb=="m"]<-1
+x$sex_activetb[x$sex_activetb=="FEMALE"]<-2
+x$sex_activetb[x$sex_activetb=="F"]<-2
+x$sex_activetb[x$sex_activetb=="female"]<-2
+x$sex_activetb[x$sex_activetb=="f"]<-2
+
+```
+
+```{r Active TB Dorm}
+
+x$dorm_activetb[!grepl("^B|^H|^G",x$dorm_activetb,ignore.case=TRUE)] <- ""
+x$dorm_activetb[grepl("^H",x$dorm_activetb,ignore.case=TRUE)] <- 1
+x$dorm_activetb[grepl("^G",x$dorm_activetb,ignore.case=TRUE)] <- 3
+x$dorm_activetb[grepl("^B",x$dorm_activetb,ignore.case=TRUE)] <- 2
+```
+
+
+```{r Active TB Sex}
+x$sex_activetb[x$sex_activetb=="MALE"]<-1
+x$sex_activetb[x$sex_activetb=="M"]<-1
+x$sex_activetb[x$sex_activetb=="male"]<-1
+x$sex_activetb[x$sex_activetb=="m"]<-1
+x$sex_activetb[x$sex_activetb=="FEMALE"]<-2
+x$sex_activetb[x$sex_activetb=="F"]<-2
+x$sex_activetb[x$sex_activetb=="female"]<-2
+x$sex_activetb[x$sex_activetb=="f"]<-2
+
+```
+
+```{ Active Tb Tbinvestigation}
 x$prev_tb_activetb[x$prev_tb_activetb=="NO"]<-0
 x$prev_tb_activetb[x$prev_tb_activetb=="YES"]<-1
 x$comorbidity[x$comorbidity=="None"]<-0
@@ -33,12 +64,113 @@ x$contact_sch_oneyr[x$contact_sch_oneyr=="NO"]<-0
 x$contact_sch_oneyr[x$contact_sch_oneyr=="YES"]<-1
 x$indexcasesch_lung_pleura[x$indexcasesch_lung_pleura=="NO"]<-0
 x$indexcasesch_lung_pleura[x$indexcasesch_lung_pleura=="Lung"]<-1
+x$indexcasesch_lung_pleura[x$indexcasesch_lung_pleura=="LUNG"]<-1
+x$indexcasesch_sputumstatus[grepl("^N",x$indexcasesch_sputumstatus,ignore.case=FALSE)] <- 0
+x$indexcasesch_sputumstatus[grepl("^n",x$indexcasesch_sputumstatus,ignore.case=FALSE)] <- 0
+x$indexcasesch_sputumstatus[grepl("^P",x$indexcasesch_sputumstatus,ignore.case=FALSE)] <- 1
+x$indexcasesch_sputumstatus[grepl("^p",x$indexcasesch_sputumstatus,ignore.case=FALSE)] <- 1
+
+```
+
+```{r Active TB Cough}
+x$cough_activetb[grepl("NA",x$cough_activetb,ignore.case=FALSE)] <- ""
+x$cough_activetb[grepl("^N",x$cough_activetb,ignore.case=FALSE)] <- 0
+x$cough_activetb[grepl("^Y",x$cough_activetb,ignore.case=FALSE)] <- 1
+x$cough_activetb[grepl("^n",x$cough_activetb,ignore.case=FALSE)] <- 0
+x$cough_activetb[grepl("^y",x$cough_activetb,ignore.case=FALSE)] <- 1
+
+x$coughduration_wks_activetb[grepl("NA",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 99
+x$coughduration_wks_activetb[grepl("^GE",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 4
+x$coughduration_wks_activetb[grepl("^LT",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 1
+x$coughduration_wks_activetb[grepl("^ONE-TW",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 2
+x$coughduration_wks_activetb[grepl("^1-2",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 2
+x$coughduration_wks_activetb[grepl("^2-3",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 3
+x$coughduration_wks_activetb[grepl("^TWO-THRE",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 3
+
+x$productive_cough_activetb[grepl("NA",x$productive_cough_activetb,ignore.case=FALSE)] <- 99
+x$productive_cough_activetb[grepl("^N",x$productive_cough_activetb,ignore.case=FALSE)] <- 0
+x$productive_cough_activetb[grepl("^n",x$productive_cough_activetb,ignore.case=FALSE)] <- 0
+x$productive_cough_activetb[grepl("^Y",x$productive_cough_activetb,ignore.case=FALSE)] <- 1
+x$productive_cough_activetb[grepl("^y",x$productive_cough_activetb,ignore.case=FALSE)] <- 1
+
+x$blood_sputum_activetb[grepl("NA",x$blood_sputum_activetb,ignore.case=FALSE)] <- ""
+x$blood_sputum_activetb[grepl("^N",x$blood_sputum_activetb,ignore.case=FALSE)] <- 0
+x$blood_sputum_activetb[grepl("^n",x$blood_sputum_activetb,ignore.case=FALSE)] <- 0
+x$blood_sputum_activetb[grepl("^Y",x$blood_sputum_activetb,ignore.case=FALSE)] <- 1
+x$blood_sputum_activetb[grepl("^y",x$blood_sputum_activetb,ignore.case=FALSE)] <- 1
+
+x$fever_activetb[grepl("NA",x$fever_activetb,ignore.case=FALSE)] <- ""
+x$fever_activetb[grepl("^N",x$fever_activetb,ignore.case=FALSE)] <- 0
+x$fever_activetb[grepl("^n",x$fever_activetb,ignore.case=FALSE)] <- 0
+x$fever_activetb[grepl("^Y",x$fever_activetb,ignore.case=FALSE)] <- 1
+x$fever_activetb[grepl("^y",x$fever_activetb,ignore.case=FALSE)] <- 1
+
+x$fever_duration_activetb[grepl("NA",x$fever_duration_activetb,ignore.case=FALSE)] <- 4
+x$fever_duration_activetb[grepl("^GE",x$fever_duration_activetb,ignore.case=FALSE)] <- 3
+x$fever_duration_activetb[grepl("^LT",x$fever_duration_activetb,ignore.case=FALSE)] <- 1
+x$fever_duration_activetb[grepl("^ONE",x$fever_duration_activetb,ignore.case=FALSE)] <- 2
+x$fever_duration_activetb[grepl("^1",x$fever_duration_activetb,ignore.case=FALSE)] <- 2
+
+x$nightsweats_2wks_activetb[grepl("NA",x$nightsweats_2wks_activetb,ignore.case=TRUE)] <- ""
+x$nightsweats_2wks_activetb[grepl("^N",x$nightsweats_2wks_activetb,ignore.case=TRUE)] <- 0
+x$nightsweats_2wks_activetb[grepl("^Y",x$nightsweats_2wks_activetb,ignore.case=TRUE)] <- 1
+
+
+x$wtloss_1month_activetb[grepl("NA",x$wtloss_1month_activetb,ignore.case=TRUE)] <- ""
+x$wtloss_1month_activetb[grepl("^N",x$wtloss_1month_activetb,ignore.case=TRUE)] <- 0
+x$wtloss_1month_activetb[grepl("^Y",x$wtloss_1month_activetb,ignore.case=TRUE)] <- 1
+
+x$fatigue_last2wks_activetb[grepl("NA",x$fatigue_last2wks_activetb,ignore.case=TRUE)] <- ""
+x$fatigue_last2wks_activetb[grepl("^N",x$fatigue_last2wks_activetb,ignore.case=TRUE)] <- 0
+x$fatigue_last2wks_activetb[grepl("^Y",x$fatigue_last2wks_activetb,ignore.case=TRUE)] <- 1
+
+x$xpert_specimen[grepl("NA",x$xpert_specimen,ignore.case=TRUE)] <- 99
+x$xpert_specimen[grepl("^SPU",x$xpert_specimen,ignore.case=TRUE)] <- 1
+x$xpert_specimen[grepl("^GASTRIC",x$xpert_specimen,ignore.case=TRUE)] <- 2
+x$xpert_specimen[grepl("^GA",x$xpert_specimen,ignore.case=TRUE)] <- 2
+x$xpert_specimen[grepl("^PU",x$xpert_specimen,ignore.case=TRUE)] <- 3
+x$xpert_specimen[grepl("^PLEURAL",x$xpert_specimen,ignore.case=TRUE)] <- 4
+x$xpert_specimen[grepl("^UR",x$xpert_specimen,ignore.case=TRUE)] <- 5
+x$xpert_specimen[grepl("^CSF",x$xpert_specimen,ignore.case=TRUE)] <- 6
+
+x$xpert_result[grepl("NA",x$xpert_result,ignore.case=TRUE)] <- 99
+x$xpert_result[grepl("^N",x$xpert_result,ignore.case=TRUE)] <- 0
+x$xpert_result[grepl("^D",x$xpert_result,ignore.case=TRUE)] <- 1
+x$xpert_result[grepl("^P",x$xpert_result,ignore.case=TRUE)] <- 1
+
+x$xpert_mtb[grepl("NA",x$xpert_mtb,ignore.case=TRUE)] <- 99
+x$xpert_mtb[grepl("^V",x$xpert_mtb,ignore.case=TRUE)] <- 0
+x$xpert_mtb[grepl("^L",x$xpert_mtb,ignore.case=TRUE)] <- 1
+x$xpert_mtb[grepl("^M",x$xpert_mtb,ignore.case=TRUE)] <- 2
+x$xpert_mtb[grepl("^H",x$xpert_mtb,ignore.case=TRUE)] <- 3
+
+x$xpert_rif[grepl("NA",x$xpert_rif,ignore.case=TRUE)] <- 99
+x$xpert_rif[grepl("^S",x$xpert_rif,ignore.case=TRUE)] <- 0
+x$xpert_rif[grepl("^R",x$xpert_rif,ignore.case=TRUE)] <- 1
+x$xpert_rif[grepl("^I",x$xpert_rif,ignore.case=TRUE)] <- 2
 
 
 
 
 ```
 
-```{r Country}
+```{r Active TB Occupation}
+x$occupation_activetb[grepl("^STU",x$occupation_activetb,ignore.case=TRUE)] <- 1
+x$occupation_activetb[grepl("^TEA",x$occupation_activetb,ignore.case=TRUE)] <- 2
+x$occupation_activetb[grepl("^HEAL",x$occupation_activetb,ignore.case=TRUE)] <- 3
+x$occupation_activetb[grepl("^OFF",x$occupation_activetb,ignore.case=TRUE)] <- 4
+x$occupation_activetb[grepl("^MON",x$occupation_activetb,ignore.case=TRUE)] <- 6
+x$occupation_activetb[grepl("^NU",x$occupation_activetb,ignore.case=TRUE)] <- 7
+x$occupation_activetb[grepl("^COO",x$occupation_activetb,ignore.case=TRUE)] <- 8
+x$occupation_activetb[grepl("^DRI",x$occupation_activetb,ignore.case=TRUE)] <- 9
+x$occupation_activetb[x$occupation_activetb=="HOME-MOTHER"]<-5
+x$occupation_activetb[x$occupation_activetb=="HOME-FATHER"]<-10
+```
 
+```{r Country}
+x$birth_place_activetb[!grepl("^IND|^TIB|^NEP|^BHU", x$birth_place_activetb,ignore.case=TRUE)] <- 5
+x$birth_place_activetb[x$birth_place_activetb=="INDIA"]<-1
+x$birth_place_activetb[x$birth_place_activetb=="TIBET"]<-2
+x$birth_place_activetb[x$birth_place_activetb=="NEPAL"]<-3
+x$birth_place_activetb[x$birth_place_activetb=="BHUTAN"]<-4
 ```
