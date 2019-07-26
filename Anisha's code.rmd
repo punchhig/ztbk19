@@ -1,0 +1,44 @@
+---
+title: "Anisha's code"
+author: "Anisha Nagpal"
+date: "July 23, 2019"
+output: html_document
+---
+```{r download, include=FALSE}
+library(plyr)
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(readxl)
+setwd(C:/ZeroTB)
+getwd()
+x=read_excel("C:/Users/anish/Documents/Zero TB in Kids/GTCV 2018_CONTACT_TRACE.xlsx")
+```
+
+```{r Active Tb Tbinvestigation}
+x$prev_tb_activetb[x$prev_tb_activetb=="NO"]<-0
+x$prev_tb_activetb[x$prev_tb_activetb=="YES"]<-1
+x$comorbidity[x$comorbidity=="None"]<-0
+x$comorbidity[x$comorbidity=="DM"]<-1
+x$comorbidity[x$comorbidity=="HTN"]<-2
+x$comorbidity[x$comorbidity=="DM_HTN"]<-3
+x$comorbidity[x$comorbidity=="Other"]<-4
+x$chronic_meds[x$chronic_meds=="NO"]<-0
+x$chronic_meds[x$chronic_meds=="YES"]<-1
+x$ever_smoked_activetb[x$ever_smoked_activetb=="NO"]<-0
+x$ever_smoked_activetb[x$ever_smoked_activetb=="YES"]<-1
+x$bcg_tibetborn_activetb[x$bcg_tibetborn_activetb=="NO"]<-0
+x$bcg_tibetborn_activetb[x$bcg_tibetborn_activetb=="YES"]<-1
+x$contact_sch_oneyr[x$contact_sch_oneyr=="NO"]<-0
+x$contact_sch_oneyr[x$contact_sch_oneyr=="YES"]<-1
+x$indexcasesch_lung_pleura[x$indexcasesch_lung_pleura=="NO"]<-0
+x$indexcasesch_lung_pleura[x$indexcasesch_lung_pleura=="Lung"]<-1
+
+
+
+
+```
+
+```{r Country}
+
+```
