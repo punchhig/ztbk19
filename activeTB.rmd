@@ -9,12 +9,14 @@ library(plyr)
 library(readr)
 library(dplyr)
 library(tidyverse)
+library(lubridate)
 
 x<-read.csv("C:/Users/anish/Documents/Zero TB in Kids/GTCV 2018_ACTIVE_TB.csv", stringsAsFactors=FALSE, na.strings=TRUE)
 ```
 
 ```{r Active TB Institute}
 x$institute_activetb[x$institute_activetb=="GTCV"]<-3
+x$institute_activetb[x$institute_activetb=="LTCV"]<-1
 ```
 
 
@@ -90,6 +92,7 @@ x$coughduration_wks_activetb[grepl("^LT",x$coughduration_wks_activetb,ignore.cas
 x$coughduration_wks_activetb[grepl("^ONE-TW",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 2
 x$coughduration_wks_activetb[grepl("^1-2",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 2
 x$coughduration_wks_activetb[grepl("^2-3",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 3
+x$coughduration_wks_activetb[grepl("^2-<3",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 3
 x$coughduration_wks_activetb[grepl("^TWO-THRE",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 3
 
 x$productive_cough_activetb[grepl("NA",x$productive_cough_activetb,ignore.case=FALSE)] <- ""
@@ -112,6 +115,7 @@ x$fever_activetb[grepl("^y",x$fever_activetb,ignore.case=FALSE)] <- 1
 
 x$fever_duration_activetb[grepl("NA",x$fever_duration_activetb,ignore.case=FALSE)] <- 4
 x$fever_duration_activetb[grepl("^GE",x$fever_duration_activetb,ignore.case=FALSE)] <- 3
+x$fever_duration_activetb[grepl("<1",x$fever_duration_activetb,ignore.case=FALSE)] <- 1
 x$fever_duration_activetb[grepl("^LT",x$fever_duration_activetb,ignore.case=FALSE)] <- 1
 x$fever_duration_activetb[grepl("^ONE",x$fever_duration_activetb,ignore.case=FALSE)] <- 2
 x$fever_duration_activetb[grepl("^1",x$fever_duration_activetb,ignore.case=FALSE)] <- 2
@@ -167,12 +171,14 @@ x$disease_site[grepl("OTHER",x$disease_site,ignore.case=TRUE)] <-9
 
 x$category[grepl("NA",x$category,ignore.case=TRUE)] <- ""
 x$category[grepl("^CAT-1",x$category,ignore.case=TRUE)] <- 1
-x$category[grepl("CAT-4",x$category,ignore.case=TRUE)] <- 2
-x$category[grepl("^IN",x$category,ignore.case=TRUE)] <- 3
-x$category[grepl("^NT",x$category,ignore.case=TRUE)] <- 4
+x$category[grepl("CAT-2",x$category,ignore.case=TRUE)] <- 2
+x$category[grepl("CAT-4",x$category,ignore.case=TRUE)] <- 3
+x$category[grepl("^IN",x$category,ignore.case=TRUE)] <- 4
+x$category[grepl("^NT",x$category,ignore.case=TRUE)] <- 5
 
 x$diagnostic_smear[grepl("^NA",x$diagnostic_smear,ignore.case=TRUE)] <- ""
 x$diagnostic_smear[grepl("^UNKNO",x$diagnostic_smear,ignore.case=TRUE)] <- 9
+x$diagnostic_smear[grepl("^SCAN",x$diagnostic_smear,ignore.case=TRUE)] <- 9
 x$diagnostic_smear[grepl("^P",x$diagnostic_smear,ignore.case=TRUE)] <- 1
 x$diagnostic_smear[grepl("^N",x$diagnostic_smear,ignore.case=TRUE)] <- 0
 x$diagnostic_smear[grepl("^NOT",x$diagnostic_smear,ignore.case=TRUE)] <- 2
@@ -279,13 +285,19 @@ x$end_rx_smear[grepl("^NOT",x$end_rx_smear,ignore.case=TRUE)] <- 2
 x$end_rx_smear[grepl("^N",x$end_rx_smear,ignore.case=TRUE)] <- 0
 x$end_rx_smear[grepl("^P",x$end_rx_smear,ignore.case=TRUE)] <- 1
 
-x$rx_outcome[grepl("^NA",x$end_rx_outcome,ignore.case=TRUE)] <- ""
-x$rx_outcome[grepl("^CU",x$end_rx_outcome,ignore.case=TRUE)] <- 1
-x$rx_outcome[grepl("^CO",x$end_rx_outcome,ignore.case=TRUE)] <- 2
-x$rx_outcome[grepl("^F",x$end_rx_outcome,ignore.case=TRUE)] <- 3
-x$rx_outcome[grepl("^D",x$end_rx_outcome,ignore.case=TRUE)] <- 4
-x$rx_outcome[grepl("^L",x$end_rx_outcome,ignore.case=TRUE)] <- 5
+x$rx_outcome[grepl("^NA",x$rx_outcome,ignore.case=TRUE)] <- ""
+x$rx_outcome[grepl("^CUR",x$rx_outcome,ignore.case=TRUE)] <- 1
+x$rx_outcome[grepl("^CO",x$rx_outcome,ignore.case=TRUE)] <- 2
+x$rx_outcome[grepl("^F",x$rx_outcome,ignore.case=TRUE)] <- 3
+x$rx_outcome[grepl("^D",x$rx_outcome,ignore.case=TRUE)] <- 4
+x$rx_outcome[grepl("^L",x$rx_outcome,ignore.case=TRUE)] <- 5
 ```
+
+```{r dates}
+x$date_rx_start = mdy(x$date_rx_start)
+x$date_rx_stopped = mdy(x$date_rx_stopped)
+```
+
 
 ```{r Active TB Occupation}
 x$occupation_activetb[grepl("^STU",x$occupation_activetb,ignore.case=TRUE)] <- 1
