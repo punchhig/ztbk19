@@ -1,0 +1,317 @@
+---
+title: "Active TB"
+author: "Anisha Nagpal"
+date: "July 23, 2019"
+output: html_document
+---
+```{r download, include=FALSE}
+library(plyr)
+library(readr)
+library(dplyr)
+library(tidyverse)
+
+x<-read.csv("C:/Users/anish/Documents/Zero TB in Kids/GTCV 2018_ACTIVE_TB.csv", stringsAsFactors=FALSE)
+```
+
+```{r Active TB Institute}
+x$institute_activetb[x$institute_activetb=="GTCV"]<-3
+```
+
+
+```{r Active TB Sex}
+x$sex_activetb[x$sex_activetb=="MALE"]<-1
+x$sex_activetb[x$sex_activetb=="M"]<-1
+x$sex_activetb[x$sex_activetb=="male"]<-1
+x$sex_activetb[x$sex_activetb=="m"]<-1
+x$sex_activetb[x$sex_activetb=="FEMALE"]<-2
+x$sex_activetb[x$sex_activetb=="F"]<-2
+x$sex_activetb[x$sex_activetb=="female"]<-2
+x$sex_activetb[x$sex_activetb=="f"]<-2
+
+```
+
+```{r Active TB Dorm}
+
+x$dorm_activetb[!grepl("^B|^H|^G",x$dorm_activetb,ignore.case=TRUE)] <- ""
+x$dorm_activetb[grepl("^H",x$dorm_activetb,ignore.case=TRUE)] <- 1
+x$dorm_activetb[grepl("^G",x$dorm_activetb,ignore.case=TRUE)] <- 3
+x$dorm_activetb[grepl("^B",x$dorm_activetb,ignore.case=TRUE)] <- 2
+```
+
+
+```{r Active TB Sex}
+x$sex_activetb[x$sex_activetb=="MALE"]<-1
+x$sex_activetb[x$sex_activetb=="M"]<-1
+x$sex_activetb[x$sex_activetb=="male"]<-1
+x$sex_activetb[x$sex_activetb=="m"]<-1
+x$sex_activetb[x$sex_activetb=="FEMALE"]<-2
+x$sex_activetb[x$sex_activetb=="F"]<-2
+x$sex_activetb[x$sex_activetb=="female"]<-2
+x$sex_activetb[x$sex_activetb=="f"]<-2
+
+```
+
+```{ Active Tb Tbinvestigation}
+x$prev_tb_activetb[x$prev_tb_activetb=="NO"]<-0
+x$prev_tb_activetb[x$prev_tb_activetb=="YES"]<-1
+x$comorbidity[x$comorbidity=="None"]<-0
+x$comorbidity[x$comorbidity=="DM"]<-1
+x$comorbidity[x$comorbidity=="HTN"]<-2
+x$comorbidity[x$comorbidity=="DM_HTN"]<-3
+x$comorbidity[x$comorbidity=="Other"]<-4
+x$chronic_meds[x$chronic_meds=="NO"]<-0
+x$chronic_meds[x$chronic_meds=="YES"]<-1
+x$ever_smoked_activetb[x$ever_smoked_activetb=="NO"]<-0
+x$ever_smoked_activetb[x$ever_smoked_activetb=="YES"]<-1
+x$bcg_tibetborn_activetb[x$bcg_tibetborn_activetb=="NO"]<-0
+x$bcg_tibetborn_activetb[x$bcg_tibetborn_activetb=="YES"]<-1
+x$contact_sch_oneyr[x$contact_sch_oneyr=="NO"]<-0
+x$contact_sch_oneyr[x$contact_sch_oneyr=="YES"]<-1
+x$indexcasesch_lung_pleura[x$indexcasesch_lung_pleura=="NO"]<-0
+x$indexcasesch_lung_pleura[x$indexcasesch_lung_pleura=="Lung"]<-1
+x$indexcasesch_lung_pleura[x$indexcasesch_lung_pleura=="LUNG"]<-1
+x$indexcasesch_sputumstatus[grepl("^N",x$indexcasesch_sputumstatus,ignore.case=FALSE)] <- 0
+x$indexcasesch_sputumstatus[grepl("^n",x$indexcasesch_sputumstatus,ignore.case=FALSE)] <- 0
+x$indexcasesch_sputumstatus[grepl("^P",x$indexcasesch_sputumstatus,ignore.case=FALSE)] <- 1
+x$indexcasesch_sputumstatus[grepl("^p",x$indexcasesch_sputumstatus,ignore.case=FALSE)] <- 1
+
+```
+
+```{r Active TB Cough}
+x$cough_activetb[grepl("NA",x$cough_activetb,ignore.case=FALSE)] <- ""
+x$cough_activetb[grepl("^N",x$cough_activetb,ignore.case=FALSE)] <- 0
+x$cough_activetb[grepl("^Y",x$cough_activetb,ignore.case=FALSE)] <- 1
+x$cough_activetb[grepl("^n",x$cough_activetb,ignore.case=FALSE)] <- 0
+x$cough_activetb[grepl("^y",x$cough_activetb,ignore.case=FALSE)] <- 1
+
+x$coughduration_wks_activetb[grepl("NA",x$coughduration_wks_activetb,ignore.case=FALSE)] <- ""
+x$coughduration_wks_activetb[grepl("^GE",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 4
+x$coughduration_wks_activetb[grepl("^LT",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 1
+x$coughduration_wks_activetb[grepl("^ONE-TW",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 2
+x$coughduration_wks_activetb[grepl("^1-2",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 2
+x$coughduration_wks_activetb[grepl("^2-3",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 3
+x$coughduration_wks_activetb[grepl("^TWO-THRE",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 3
+
+x$productive_cough_activetb[grepl("NA",x$productive_cough_activetb,ignore.case=FALSE)] <- ""
+x$productive_cough_activetb[grepl("^N",x$productive_cough_activetb,ignore.case=FALSE)] <- 0
+x$productive_cough_activetb[grepl("^n",x$productive_cough_activetb,ignore.case=FALSE)] <- 0
+x$productive_cough_activetb[grepl("^Y",x$productive_cough_activetb,ignore.case=FALSE)] <- 1
+x$productive_cough_activetb[grepl("^y",x$productive_cough_activetb,ignore.case=FALSE)] <- 1
+
+x$blood_sputum_activetb[grepl("NA",x$blood_sputum_activetb,ignore.case=FALSE)] <- ""
+x$blood_sputum_activetb[grepl("^N",x$blood_sputum_activetb,ignore.case=FALSE)] <- 0
+x$blood_sputum_activetb[grepl("^n",x$blood_sputum_activetb,ignore.case=FALSE)] <- 0
+x$blood_sputum_activetb[grepl("^Y",x$blood_sputum_activetb,ignore.case=FALSE)] <- 1
+x$blood_sputum_activetb[grepl("^y",x$blood_sputum_activetb,ignore.case=FALSE)] <- 1
+
+x$fever_activetb[grepl("NA",x$fever_activetb,ignore.case=FALSE)] <- ""
+x$fever_activetb[grepl("^N",x$fever_activetb,ignore.case=FALSE)] <- 0
+x$fever_activetb[grepl("^n",x$fever_activetb,ignore.case=FALSE)] <- 0
+x$fever_activetb[grepl("^Y",x$fever_activetb,ignore.case=FALSE)] <- 1
+x$fever_activetb[grepl("^y",x$fever_activetb,ignore.case=FALSE)] <- 1
+
+x$fever_duration_activetb[grepl("NA",x$fever_duration_activetb,ignore.case=FALSE)] <- 4
+x$fever_duration_activetb[grepl("^GE",x$fever_duration_activetb,ignore.case=FALSE)] <- 3
+x$fever_duration_activetb[grepl("^LT",x$fever_duration_activetb,ignore.case=FALSE)] <- 1
+x$fever_duration_activetb[grepl("^ONE",x$fever_duration_activetb,ignore.case=FALSE)] <- 2
+x$fever_duration_activetb[grepl("^1",x$fever_duration_activetb,ignore.case=FALSE)] <- 2
+
+x$nightsweats_2wks_activetb[grepl("NA",x$nightsweats_2wks_activetb,ignore.case=TRUE)] <- ""
+x$nightsweats_2wks_activetb[grepl("^N",x$nightsweats_2wks_activetb,ignore.case=TRUE)] <- 0
+x$nightsweats_2wks_activetb[grepl("^Y",x$nightsweats_2wks_activetb,ignore.case=TRUE)] <- 1
+
+
+x$wtloss_1month_activetb[grepl("NA",x$wtloss_1month_activetb,ignore.case=TRUE)] <- ""
+x$wtloss_1month_activetb[grepl("^N",x$wtloss_1month_activetb,ignore.case=TRUE)] <- 0
+x$wtloss_1month_activetb[grepl("^Y",x$wtloss_1month_activetb,ignore.case=TRUE)] <- 1
+
+x$fatigue_last2wks_activetb[grepl("NA",x$fatigue_last2wks_activetb,ignore.case=TRUE)] <- ""
+x$fatigue_last2wks_activetb[grepl("^N",x$fatigue_last2wks_activetb,ignore.case=TRUE)] <- 0
+x$fatigue_last2wks_activetb[grepl("^Y",x$fatigue_last2wks_activetb,ignore.case=TRUE)] <- 1
+
+x$xpert_specimen[grepl("NA",x$xpert_specimen,ignore.case=TRUE)] <- ""
+x$xpert_specimen[grepl("^SPU",x$xpert_specimen,ignore.case=TRUE)] <- 1
+x$xpert_specimen[grepl("^GASTRIC",x$xpert_specimen,ignore.case=TRUE)] <- 2
+x$xpert_specimen[grepl("^GA",x$xpert_specimen,ignore.case=TRUE)] <- 2
+x$xpert_specimen[grepl("^PU",x$xpert_specimen,ignore.case=TRUE)] <- 3
+x$xpert_specimen[grepl("^PLEURAL",x$xpert_specimen,ignore.case=TRUE)] <- 4
+x$xpert_specimen[grepl("^UR",x$xpert_specimen,ignore.case=TRUE)] <- 5
+x$xpert_specimen[grepl("^CSF",x$xpert_specimen,ignore.case=TRUE)] <- 6
+
+x$xpert_result[grepl("NA",x$xpert_result,ignore.case=TRUE)] <- ""
+x$xpert_result[grepl("^N",x$xpert_result,ignore.case=TRUE)] <- 0
+x$xpert_result[grepl("^D",x$xpert_result,ignore.case=TRUE)] <- 1
+x$xpert_result[grepl("^P",x$xpert_result,ignore.case=TRUE)] <- 1
+
+x$xpert_mtb[grepl("NA",x$xpert_mtb,ignore.case=TRUE)] <- ""
+x$xpert_mtb[grepl("^V",x$xpert_mtb,ignore.case=TRUE)] <- 0
+x$xpert_mtb[grepl("^L",x$xpert_mtb,ignore.case=TRUE)] <- 1
+x$xpert_mtb[grepl("^M",x$xpert_mtb,ignore.case=TRUE)] <- 2
+x$xpert_mtb[grepl("^H",x$xpert_mtb,ignore.case=TRUE)] <- 3
+
+x$xpert_rif[grepl("NA",x$xpert_rif,ignore.case=TRUE)] <- ""
+x$xpert_rif[grepl("^S",x$xpert_rif,ignore.case=TRUE)] <- 0
+x$xpert_rif[grepl("^R",x$xpert_rif,ignore.case=TRUE)] <- 1
+x$xpert_rif[grepl("^I",x$xpert_rif,ignore.case=TRUE)] <- 2
+
+x$disease_site[grepl("NA",x$disease_site,ignore.case=TRUE)] <- ""
+x$disease_site[grepl("LUNG",x$disease_site,ignore.case=TRUE)] <-1
+x$disease_site[grepl("^PLE",x$disease_site,ignore.case=TRUE)] <-2
+x$disease_site[grepl("LUNG & PLEURA",x$disease_site,ignore.case=TRUE)] <-3
+x$disease_site[grepl("^LYMPH",x$disease_site,ignore.case=TRUE)] <-4
+x$disease_site[grepl("^AB",x$disease_site,ignore.case=TRUE)] <-5
+x$disease_site[grepl("^SP",x$disease_site,ignore.case=TRUE)] <-6
+x$disease_site[grepl("^BONE",x$disease_site,ignore.case=TRUE)] <-7
+x$disease_site[grepl("OTHER BONE",x$disease_site,ignore.case=TRUE)] <-7
+x$disease_site[grepl("OTHER",x$disease_site,ignore.case=TRUE)] <-9
+
+x$category[grepl("NA",x$category,ignore.case=TRUE)] <- ""
+x$category[grepl("^CAT-1",x$category,ignore.case=TRUE)] <- 1
+x$category[grepl("CAT-4",x$category,ignore.case=TRUE)] <- 2
+x$category[grepl("^IN",x$category,ignore.case=TRUE)] <- 3
+x$category[grepl("^NT",x$category,ignore.case=TRUE)] <- 4
+
+x$diagnostic_smear[grepl("^NA",x$diagnostic_smear,ignore.case=TRUE)] <- ""
+x$diagnostic_smear[grepl("^UNKNO",x$diagnostic_smear,ignore.case=TRUE)] <- 9
+x$diagnostic_smear[grepl("^P",x$diagnostic_smear,ignore.case=TRUE)] <- 1
+x$diagnostic_smear[grepl("^N",x$diagnostic_smear,ignore.case=TRUE)] <- 0
+x$diagnostic_smear[grepl("^NOT",x$diagnostic_smear,ignore.case=TRUE)] <- 2
+
+x$hiv[grepl("^NA",x$hiv,ignore.case=TRUE)] <- ""
+x$hiv[grepl("^N",x$hiv,ignore.case=TRUE)] <- 0
+x$hiv[grepl("^P",x$hiv,ignore.case=TRUE)] <- 1
+x$hiv[grepl("^NOT",x$hiv,ignore.case=TRUE)] <- 2
+x$hiv[grepl("^UNK",x$hiv,ignore.case=TRUE)] <- 9
+
+x$hep_b[grepl("^NA",x$hep_b,ignore.case=TRUE)] <- ""
+x$hep_b[grepl("^N",x$hep_b,ignore.case=TRUE)] <- 0
+x$hep_b[grepl("^P",x$hep_b,ignore.case=TRUE)] <- 1
+x$hep_b[grepl("^NOT",x$hep_b,ignore.case=TRUE)] <- 2
+x$hep_b[grepl("^UNK",x$hep_b,ignore.case=TRUE)] <- 9
+
+x$culture_result[grepl("^NA",x$culture_result,ignore.case=TRUE)] <- ""
+x$culture_result[grepl("^NO",x$culture_result,ignore.case=TRUE)] <- 3
+x$culture_result[grepl("^N",x$culture_result,ignore.case=TRUE)] <- 0
+x$culture_result[grepl("^P",x$culture_result,ignore.case=TRUE)] <- 1
+x$culture_result[grepl("^NOT",x$culture_result,ignore.case=TRUE)] <- 2
+x$culture_result[grepl("^UNK",x$culture_result,ignore.case=TRUE)] <- 9
+
+x$dst_inh[grepl("^NA",x$dst_inh,ignore.case=TRUE)] <- ""
+x$dst_inh[grepl("^SEN",x$dst_inh,ignore.case=TRUE)] <- 0
+x$dst_inh[grepl("^RES",x$dst_inh,ignore.case=TRUE)] <- 1
+x$dst_inh[grepl("^NOT",x$dst_inh,ignore.case=TRUE)] <- 2
+x$dst_inh[grepl("^UNK",x$dst_inh,ignore.case=TRUE)] <- 9
+
+x$dst_rif[grepl("^NA",x$dst_rif,ignore.case=TRUE)] <- ""
+x$dst_rif[grepl("^SEN",x$dst_rif,ignore.case=TRUE)] <- 0
+x$dst_rif[grepl("^RES",x$dst_rif,ignore.case=TRUE)] <- 1
+x$dst_rif[grepl("^NOT",x$dst_rif,ignore.case=TRUE)] <- 2
+x$dst_rif[grepl("^UNK",x$dst_rif,ignore.case=TRUE)] <- 9
+
+x$dst_etham[grepl("^NA",x$dst_etham,ignore.case=TRUE)] <- ""
+x$dst_etham[grepl("^SEN",x$dst_etham,ignore.case=TRUE)] <- 0
+x$dst_etham[grepl("^RES",x$dst_etham,ignore.case=TRUE)] <- 1
+x$dst_etham[grepl("^NOT",x$dst_etham,ignore.case=TRUE)] <- 2
+x$dst_etham[grepl("^UNK",x$dst_etham,ignore.case=TRUE)] <- 9
+
+x$dst_pza[grepl("^NA",x$dst_pza,ignore.case=TRUE)] <- ""
+x$dst_pza[grepl("^SEN",x$dst_pza,ignore.case=TRUE)] <- 0
+x$dst_pza[grepl("^RES",x$dst_pza,ignore.case=TRUE)] <- 1
+x$dst_pza[grepl("^NOT",x$dst_pza,ignore.case=TRUE)] <- 2
+x$dst_pza[grepl("^UNK",x$dst_pza,ignore.case=TRUE)] <- 9
+
+x$dst_ofx[grepl("^NA",x$dst_ofx,ignore.case=TRUE)] <- ""
+x$dst_ofx[grepl("^SEN",x$dst_ofx,ignore.case=TRUE)] <- 0
+x$dst_ofx[grepl("^RES",x$dst_ofx,ignore.case=TRUE)] <- 1
+x$dst_ofx[grepl("^NOT",x$dst_ofx,ignore.case=TRUE)] <- 2
+x$dst_ofx[grepl("^UNK",x$dst_ofx,ignore.case=TRUE)] <- 9
+
+x$dst_mfx[grepl("^NA",x$dst_mfx,ignore.case=TRUE)] <- ""
+x$dst_mfx[grepl("^SEN",x$dst_mfx,ignore.case=TRUE)] <- 0
+x$dst_mfx[grepl("^RES",x$dst_mfx,ignore.case=TRUE)] <- 1
+x$dst_mfx[grepl("^NOT",x$dst_mfx,ignore.case=TRUE)] <- 2
+x$dst_mfx[grepl("^UNK",x$dst_mfx,ignore.case=TRUE)] <- 9
+
+x$dst_km[grepl("^NA",x$dst_km,ignore.case=TRUE)] <- ""
+x$dst_km[grepl("^SEN",x$dst_km,ignore.case=TRUE)] <- 0
+x$dst_km[grepl("^RES",x$dst_km,ignore.case=TRUE)] <- 1
+x$dst_km[grepl("^NOT",x$dst_km,ignore.case=TRUE)] <- 2
+x$dst_km[grepl("^UNK",x$dst_km,ignore.case=TRUE)] <- 9
+
+x$dst_sm[grepl("^NA",x$dst_sm,ignore.case=TRUE)] <- ""
+x$dst_sm[grepl("^SEN",x$dst_sm,ignore.case=TRUE)] <- 0
+x$dst_sm[grepl("^RES",x$dst_sm,ignore.case=TRUE)] <- 1
+x$dst_sm[grepl("^NOT",x$dst_sm,ignore.case=TRUE)] <- 2
+x$dst_sm[grepl("^UNK",x$dst_sm,ignore.case=TRUE)] <- 9
+
+x$dst_am[grepl("^NA",x$dst_am,ignore.case=TRUE)] <- ""
+x$dst_am[grepl("^SEN",x$dst_am,ignore.case=TRUE)] <- 0
+x$dst_am[grepl("^RES",x$dst_am,ignore.case=TRUE)] <- 1
+x$dst_am[grepl("^NOT",x$dst_am,ignore.case=TRUE)] <- 2
+x$dst_am[grepl("^UNK",x$dst_am,ignore.case=TRUE)] <- 9
+
+x$dst_cm[grepl("^NA",x$dst_cm,ignore.case=TRUE)] <- ""
+x$dst_cm[grepl("^SEN",x$dst_cm,ignore.case=TRUE)] <- 0
+x$dst_cm[grepl("^RES",x$dst_cm,ignore.case=TRUE)] <- 1
+x$dst_cm[grepl("^NOT",x$dst_cm,ignore.case=TRUE)] <- 2
+x$dst_cm[grepl("^UNK",x$dst_cm,ignore.case=TRUE)] <- 9
+
+x$dst_ethio[grepl("^NA",x$dst_ethio,ignore.case=TRUE)] <- ""
+x$dst_ethio[grepl("^SEN",x$dst_ethio,ignore.case=TRUE)] <- 0
+x$dst_ethio[grepl("^RES",x$dst_ethio,ignore.case=TRUE)] <- 1
+x$dst_ethio[grepl("^NOT",x$dst_ethio,ignore.case=TRUE)] <- 2
+x$dst_ethio[grepl("^UNK",x$dst_ethio,ignore.case=TRUE)] <- 9
+
+x$dst_pas[grepl("^NA",x$dst_pas,ignore.case=TRUE)] <- ""
+x$dst_pas[grepl("^SEN",x$dst_pas,ignore.case=TRUE)] <- 0
+x$dst_pas[grepl("^RES",x$dst_pas,ignore.case=TRUE)] <- 1
+x$dst_pas[grepl("^NOT",x$dst_pas,ignore.case=TRUE)] <- 2
+x$dst_pas[grepl("^UNK",x$dst_pas,ignore.case=TRUE)] <- 9
+
+x$dst_clf[grepl("^NA",x$dst_clf,ignore.case=TRUE)] <- ""
+x$dst_clf[grepl("^SEN",x$dst_clf,ignore.case=TRUE)] <- 0
+x$dst_clf[grepl("^RES",x$dst_clf,ignore.case=TRUE)] <- 1
+x$dst_clf[grepl("^NOT",x$dst_clf,ignore.case=TRUE)] <- 2
+x$dst_clf[grepl("^UNK",x$dst_clf,ignore.case=TRUE)] <- 9
+
+x$end_rx_smear[grepl("^NA",x$end_rx_smear,ignore.case=TRUE)] <- ""
+x$end_rx_smear[grepl("^NOT",x$end_rx_smear,ignore.case=TRUE)] <- 2
+x$end_rx_smear[grepl("^N",x$end_rx_smear,ignore.case=TRUE)] <- 0
+x$end_rx_smear[grepl("^P",x$end_rx_smear,ignore.case=TRUE)] <- 1
+
+x$rx_outcome[grepl("^NA",x$end_rx_outcome,ignore.case=TRUE)] <- ""
+x$rx_outcome[grepl("^CU",x$end_rx_outcome,ignore.case=TRUE)] <- 1
+x$rx_outcome[grepl("^CO",x$end_rx_outcome,ignore.case=TRUE)] <- 2
+x$rx_outcome[grepl("^F",x$end_rx_outcome,ignore.case=TRUE)] <- 3
+x$rx_outcome[grepl("^D",x$end_rx_outcome,ignore.case=TRUE)] <- 4
+x$rx_outcome[grepl("^L",x$end_rx_outcome,ignore.case=TRUE)] <- 5
+```
+
+```{r Active TB Occupation}
+x$occupation_activetb[grepl("^STU",x$occupation_activetb,ignore.case=TRUE)] <- 1
+x$occupation_activetb[grepl("^TEA",x$occupation_activetb,ignore.case=TRUE)] <- 2
+x$occupation_activetb[grepl("^HEAL",x$occupation_activetb,ignore.case=TRUE)] <- 3
+x$occupation_activetb[grepl("^OFF",x$occupation_activetb,ignore.case=TRUE)] <- 4
+x$occupation_activetb[grepl("^MON",x$occupation_activetb,ignore.case=TRUE)] <- 6
+x$occupation_activetb[grepl("^NU",x$occupation_activetb,ignore.case=TRUE)] <- 7
+x$occupation_activetb[grepl("^COO",x$occupation_activetb,ignore.case=TRUE)] <- 8
+x$occupation_activetb[grepl("^DRI",x$occupation_activetb,ignore.case=TRUE)] <- 9
+x$occupation_activetb[x$occupation_activetb=="HOME-MOTHER"]<-5
+x$occupation_activetb[x$occupation_activetb=="HOME-FATHER"]<-10
+```
+
+```{r Country}
+x$birth_place_activetb[!grepl("^IND|^TIB|^NEP|^BHU", x$birth_place_activetb,ignore.case=TRUE)] <- 5
+x$birth_place_activetb[x$birth_place_activetb=="INDIA"]<-1
+x$birth_place_activetb[x$birth_place_activetb=="TIBET"]<-2
+x$birth_place_activetb[x$birth_place_activetb=="NEPAL"]<-3
+x$birth_place_activetb[x$birth_place_activetb=="BHUTAN"]<-4
+```
+
+```{r complete}
+x$main_database_demographics_complete<-2
+x$main_database_tbinvestigation_complete<-2
+x$active_tb_tbinvestigation_complete<-2
+x$tst_reactive_demographics_complete<-2
+x$tst_reactive_treatment_complete<-2
+```
