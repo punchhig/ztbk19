@@ -10,7 +10,7 @@ library(readr)
 library(dplyr)
 library(tidyverse)
 
-x<-read.csv("C:/Users/anish/Documents/Zero TB in Kids/GTCV 2018_ACTIVE_TB.csv", stringsAsFactors=FALSE)
+x<-read.csv("C:/Users/anish/Documents/Zero TB in Kids/GTCV 2018_ACTIVE_TB.csv", stringsAsFactors=FALSE, na.strings=TRUE)
 ```
 
 ```{r Active TB Institute}
@@ -314,4 +314,10 @@ x$main_database_tbinvestigation_complete<-2
 x$active_tb_tbinvestigation_complete<-2
 x$tst_reactive_demographics_complete<-2
 x$tst_reactive_treatment_complete<-2
+```
+
+```{r write}
+write.csv(x,"C:/Users/anish/Documents/Zero TB in Kids/GCTV 2018 ACTIVE_TB_clean.csv", na="")
+
+
 ```
