@@ -1,10 +1,9 @@
 ---
-title: "code"
+title: "tst reactive"
 author: "Gopika Punchhi"
-date: "7/23/2019"
+date: "8/13/2019"
 output: html_document
 ---
-
 ```{r institute, include=FALSE}
 
 library(plyr)
@@ -14,88 +13,81 @@ library(tidyverse)
 
 
 x=read.csv("C:/Users/g_pun/Dropbox/####", stringsAsFactors = FALSE, na.strings=TRUE)
+```
 
-
-##Insitute variable renaming
-
-x$institute[x$institute=="GTCV"]<-3
-
+```{r institute}
+x$institute_reactivetb[x$institute_reactivetb==""]<-
 ```
 
 ```{r sex}
-x$sex[x$sex=="MALE"]<-1
-x$sex[x$sex=="M"]<-1
-x$sex[x$sex=="male"]<-1
-x$sex[x$sex=="m"]<-1
-
-x$sex[x$sex=="FEMALE"]<-2
-x$sex[x$sex=="F"]<-2
-x$sex[x$sex=="female"]<-2
-x$sex[x$sex=="f"]<-2
-
+x$sex_reactivetb[x$sex_reactivetb=="M"]<-1
+x$sex_reactivetb[x$sex_reactivetb=="MALE"]<-1
+x$sex_reactivetb[x$sex_reactivetb=="m"]<-1
+x$sex_reactivetb[x$sex_reactivetb=="F"]<-2
+x$sex_reactivetb[x$sex_reactivetb=="FEMALE"]<-2
+x$sex_reactivetb[x$sex_reactivetb=="f"]<-2
 ```
 
-```{r age}
-x$age[x$age=="NA"]<-""
-```
-
-```{r arrival year}
-x$arrivealyear_fromtibet[x$arrivealyear_fromtibet=="NA"]<-""
-```
-
-```{r ethnicity}
-x$ethnicity[x$ethnicity=="NA"]<-""
-```
-
-
-```{r main TB Dorm}
-
-x$dorm_[!grepl("^B|^H|^G",x$dorm,ignore.case=TRUE)] <- ""
-x$dorm[grepl("^H",x$dorm,ignore.case=TRUE)] <- 1
-x$dorm[grepl("^G",x$dorm,ignore.case=TRUE)] <- 3
-x$dorm[grepl("^B",x$dorm,ignore.case=TRUE)] <- 2
-x$dorm[x$dorm=="STAFF"]<-5
+```{r dorm}
+x$dorm_reactivetb[!grepl("^B|^H|^G",x$dorm_reactivetb,ignore.case=TRUE)] <- ""
+x$dorm_reactivetb[grepl("^H",x$dorm_reactivetb,ignore.case=TRUE)] <- 1
+x$dorm_reactivetb[grepl("^G",x$dorm_reactivetb,ignore.case=TRUE)] <- 3
+x$dorm_reactivetb[grepl("^B",x$dorm_reactivetb,ignore.case=TRUE)] <- 2
 ```
 
 ```{r occuapation}
-x$occupation[x$occupation=="STUDENT"]<-1
-x$occupation[x$occupation=="TEACHER"]<-2
-x$occupation[x$occupation=="HEALTH-STAFF"]<-3
-x$occupation[x$occupation=="OFFICE-STAFF"]<-4
-x$occupation[x$occupation=="HOME-MOTHER"]<-5
-x$occupation[x$occupation=="MONK"]<-6
-x$occupation[x$occupation=="NUN"]<-7
-x$occupation[x$occupation=="COOK"]<-8
-x$occupation[x$occupation=="DRIVER"]<-9
-x$occupation[x$occupation=="HOME-FATHER"]<-10
-x$occupation[x$occupation=="STAFF"]<-""
+x$occupation_reactivetb[x$occupation_reactivetb=="STUDENT"]<-1
+x$occupation_reactivetb[x$occupation_reactivetb=="TEACHER"]<-2
+x$occupation_reactivetb[x$occupation_reactivetb=="HEALTH-STAFF"]<-3
+x$occupation_reactivetb[x$occupation_reactivetb=="OFFICE-STAFF"]<-4
+x$occupation_reactivetb[x$occupation_reactivetb=="HOME-MOTHER"]<-5
+x$occupation_reactivetb[x$occupation_reactivetb=="MONK"]<-6
+x$occupation_reactivetb[x$occupation_reactivetb=="NUN"]<-7
+x$occupation_reactivetb[x$occupation_reactivetb=="COOK"]<-8
+x$occupation_reactivetb[x$occupation_reactivetb=="DRIVER"]<-9
+x$occupation_reactivetb[x$occupation_reactivetb=="HOME-FATHER"]<-10
+x$occupation_reactivetb[x$occupation_reactivetb=="STAFF"]<-""
 ```
 
 ```{r Country}
-x$birth_place[!grepl("^IND|^TIB|^NEP|^BHU", x$birth_place,ignore.case=TRUE)] <- 5
-x$birth_place[x$birth_place=="INDIA"]<-1
-x$birth_place[x$birth_place=="TIBET"]<-2
-x$birth_place[x$birth_place=="NEPAL"]<-3
-x$birth_place[x$birth_place=="BHUTAN"]<-4
+x$birth_place_reactivetb[!grepl("^IND|^TIB|^NEP|^BHU", x$birth_place_reactivetb,ignore.case=TRUE)] <- 5
+x$birth_place_reactivetb[x$birth_place_reactivetb=="INDIA"]<-1
+x$birth_place_reactivetb[x$birth_place_reactivetb=="TIBET"]<-2
+x$birth_place_reactivetb[x$birth_place_reactivetb=="NEPAL"]<-3
+x$birth_place_reactivetb[x$birth_place_reactivetb=="BHUTAN"]<-4
+```
+
+```{r complete demo}
+x$tst_reactive_demographics_complete[x$tst_reactive_demographics_complete=="INCOMPLETE"]<-0
+x$tst_reactive_demographics_complete[x$tst_reactive_demographics_complete=="UNVERIFIED"]<-1
+x$tst_reactive_demographics_complete[x$tst_reactive_demographics_complete=="COMPLETE"]<-2
 ```
 
 
-```{r prev tb}
-x$prev_tb[x$prev_tb=="NO"]<-0
-x$prev_tb[x$prev_tb=="YES"]<-1
-x$prev_tb[x$prev_tb=="NA"]<-9
-
+```{r prev therapy}
+x$prev_therapy[x$prev_therapy=="RECEIVED"]<-1
+x$prev_therapy[x$prev_therapy=="NOT RECEIVED"]<-2
+x$prev_therapy[x$prev_therapy=="CONSENTED"]<-3
+x$prev_therapy[x$prev_therapy=="REFUSED"]<-4
+x$prev_therapy[x$prev_therapy=="NOT RECOMMENDED"]<-5
+x$prev_therapy[x$prev_therapy=="ACTIVE TB"]<-6
 ```
 
-```{r year of previous TB}
-x$prevtb_year[x$prevtb_year=="NA"]<-""
+```{r prev regimen}
+x$prev_therapy_reg[x$prev_therapy_reg="4R"]<-1
+x$prev_therapy_reg[x$prev_therapy_reg="3HR"]<-2
+x$prev_therapy_reg[x$prev_therapy_reg="6H"]<-3
+x$prev_therapy_reg[x$prev_therapy_reg="3HP"]<-4
+```
+
+```{r adverse reaction}
+x$prevther_adr[x$prevther_adr=="NO"]<-0
+x$prevther_adr[x$prevther_adr=="YES"]<-1
 ```
 
 
-```{r prev tb type}
-x$prevtb_type[x$prevtb_type=="NON MDR"]<-0
-x$prevtb_type[x$prevtb_type=="MDR"]<-1
-x$prevtb_type[x$prevtb_type=="NA"]<-""
+```{r culprit drug}
+x$culprit_drug[x$cu
 
 ```
 
@@ -400,9 +392,6 @@ x$tst_reactive_treatment_complete<-2
 ```{r export}
 write.csv(x,"C:/Users/g_pun/Dropbox/ZeroTB/####", na="")
 ```
-
-
-
 
 
 
