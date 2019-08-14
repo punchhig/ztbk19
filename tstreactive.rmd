@@ -16,7 +16,7 @@ x<-read.csv("C:/Users/anish/Documents/Zero TB in Kids/GCTV 2018 TST_REAC.csv", s
 ```
 
 ```{r Reactive TB Institute}
-x$institute_activetb[x$institute_activetb=="GTCV"]<-3
+ x$institute_activetb[x$institute_activetb=="GTCV"]<-3
 x$institute_activetb[x$institute_activetb=="LTCV"]<-1
 x$institute_reactivetb[x$institute_reactivetb=="GTCV"]<-3
 x$institute_reactivetb[x$institute_reactivetb=="LTCV"]<-1
