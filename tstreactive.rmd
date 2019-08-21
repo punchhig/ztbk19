@@ -115,7 +115,7 @@ x$sgot_3[grepl("NA",x$sgot_3,ignore.case=TRUE)]<-""
 x$totalbil_4[grepl("NA",x$totalbil_4,ignore.case=TRUE)]<-""
 x$directbil_4[grepl("NA",x$directbil_4,ignore.case=TRUE)]<-""
 x$sgpt_4[grepl("NA",x$sgpt_4,ignore.case=TRUE)]<-""
-x$sgot_4[grepl("NA",x$sgot_4,ignore.case=TRUE)]<-""
+x$sgot_4[grepl("NA",x$sgot_4,ignore.case=TRUE)]<-"" 
 
 x$prevtherapy_held[grepl("NA",x$prevtherapy_held,ignore.case=TRUE)]<-""
 x$prevtherapy_held[grepl("^N",x$prevtherapy_held,ignore.case=TRUE)]<-0
