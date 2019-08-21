@@ -22,7 +22,6 @@ x$institute_reactivetb[x$institute_reactivetb=="GTCV"]<-3
 x$institute_reactivetb[x$institute_reactivetb=="LTCV"]<-1
 ```
 
-
 ```{r Reactive TB Sex}
 x$sex_reactivetb[x$sex_activetb=="MALE"]<-1
 x$sex_reactivetb[x$sex_activetb=="M"]<-1
