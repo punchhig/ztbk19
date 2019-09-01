@@ -103,6 +103,7 @@ x$prevtb_type[x$prevtb_type=="NA"]<-""
 x$activetb[x$activetb=="YES"]<-0
 x$activetb[x$activetb=="NO"]<-1
 ```
+
 ```{r reactivetst}
 x$reactivetst[x$reactivetst=="YES"]<-0
 x$reactivetst[x$reactivetst=="NO"]<-1
