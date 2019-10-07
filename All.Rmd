@@ -7,11 +7,11 @@ output: html_document
 
 
 ```{r institute, include=FALSE}
-
 library(plyr)
 library(readr)
 library(dplyr)
 library(tidyverse)
+library(lubridate)
 
 
 x=read.csv("C:/Users/g_pun/Dropbox/ZeroTB/GTCV/ACF_2018_clean.csv",stringsAsFactors = FALSE, na.strings=TRUE)
@@ -35,6 +35,8 @@ x$age[x$age=="NA"]<-""
 x$sex[grepl("^m", x$sex, ignore.case = TRUE)]<-1
 x$sex[grepl("^f", x$sex, ignore.case = TRUE)]<-2
 
+x$class_section[x$class_section=="NA"]<-""
+
 ```
 
 ```{r main TB Dorm}
@@ -50,6 +52,10 @@ x$dorm[grepl("^Y", x$dorm, ignore.case=TRUE)]<-7
 ```
 
 ```{r occuapation}
+
+x$enroll_date[x$enroll_date=="NA"]<-""
+
+
 x$occupation[x$occupation=="STUDENT"]<-1
 x$occupation[x$occupation=="TEACHER"]<-2
 x$occupation[x$occupation=="HEALTH-STAFF"]<-3
@@ -65,6 +71,8 @@ x$occupation[x$occupation=="DRIVER"]<-9
 x$occupation[x$occupation=="HOME-FATHER"]<-10
 x$occupation[x$occupation=="HOME FATHER"]<-10
 x$occupation[x$occupation=="STAFF"]<-11
+x$occupation[x$occupation=="OTHER"]<-11
+x$occupation[x$occupation=="OTHER STAFF"]<-11
 ```
 
 ```{r Country}
@@ -74,6 +82,11 @@ x$birth_place[x$birth_place=="TIBET"]<-2
 x$birth_place[x$birth_place=="NEPAL"]<-3
 x$birth_place[x$birth_place=="BHUTAN"]<-4
 x$birth_place[x$birth_place=="USA"]<-5
+
+x$arrivalyear_fromtibet[x$arrivalyear_fromtibet=="NA"]<-""
+x$ethnicity[x$ethnicity=="NA"]<-""
+x$address_settlement_city[x$address_settlement_city=="NA"]<-""
+x$weight_kg[x$weight_kg=="NA"]<-""
 ```
 
 
@@ -81,7 +94,7 @@ x$birth_place[x$birth_place=="USA"]<-5
 x$prev_tb[x$prev_tb=="NO"]<-0
 x$prev_tb[x$prev_tb=="YES"]<-1
 x$prev_tb[x$prev_tb=="UNKNOWN"]<-9
-x$prev_tb[x$prev_tb=="NA"]<-9
+x$prev_tb[x$prev_tb=="NA"]<-99
 
 ```
 
@@ -96,8 +109,11 @@ x$prevtb_type[x$prevtb_type=="NON MDR"]<-0
 x$prevtb_type[grepl("^no",x$prevtb_type, ignore.case = TRUE)]<-0
 x$prevtb_type[x$prevtb_type=="MDR"]<-1
 x$prevtb_type[grepl("^md",x$prevtb_type, ignore.case = TRUE)]<-1
-x$prevtb_type[x$prevtb_type=="NA"]<-""
+x$prevtb_type[x$prevtb_type=="NA"]<-99
+x$prevtb_type[x$prevtb_type=="UNKNOWN"]<-9
 
+x$prevtb_site[x$prevtb_site=="UNKNOWN"]<-9
+x$prevtb_site[x$prevtb_site=="NA"]<-99
 ```
 
 
@@ -107,6 +123,8 @@ x$seizures[x$seizures=="NO"]<-0
 x$seizures[x$seizures=="no"]<-0
 x$seizures[x$seizures=="YES"]<-1
 x$seizures[x$seizures=="yes"]<-1
+x$seizures[x$seizures=="UNKNOWN"]<-9
+x$seizures[x$seizures=="NA"]<-99
 ```
 
 ```{r hepb}
@@ -121,6 +139,8 @@ x$preg_breastfeed[x$preg_breastfeed=="NO"]<-0
 x$preg_breastfeed[x$preg_breastfeed=="PREG"]<-1
 x$preg_breastfeed[grepl("^bre", x$preg_breastfeed, ignore.case = TRUE)]<-2
 x$preg_breastfeed[x$preg_breastfeed=="BREASTFEED"]<-2
+x$preg_breastfeed[x$preg_breastfeed=="UNKNOWN"]<-9
+x$preg_breastfeed[x$preg_breastfeed=="NA"]<-99
 ```
 
 ```{r other comorbid}
@@ -129,14 +149,18 @@ x$other_cormorbid[x$other_cormorbid=="DM"]<-1
 x$other_cormorbid[x$other_cormorbid=="HTN"]<-2
 x$other_cormorbid[x$other_cormorbid=="DM_HTN"]<-3
 x$other_cormorbid[grepl("^o", x$other_cormorbid, ignore.case = TRUE)]<-4
+x$other_cormorbid[x$other_cormorbid=="UNKNOWN"]<-9
+x$other_cormorbid[x$other_cormorbid=="NA"]<-99
 ```
 
 ```{r longterm med}
 x$longterm_med[x$longterm_med=="NONE"]<-0
 x$longterm_med[x$longterm_med=="NO"]<-0
 x$longterm_med[x$longterm_med=="ANTI-HEPB"]<-1
+x$longterm_med[x$longterm_med=="ANTI HEPB"]<-1
 x$longterm_med[x$longterm_med=="ANTI_SEIZURE"]<-2
 x$longterm_med[x$longterm_med=="ANTI-SEIZURE"]<-2
+x$longterm_med[x$longterm_med=="ANTI SEIZURE"]<-2
 x$longterm_med[x$longterm_med=="ANTI_DM"]<-3
 x$longterm_med[x$longterm_med=="ANTI-HTN"]<-4
 x$longterm_med[x$longterm_med=="ANTI-DMHTN"]<-5
@@ -151,18 +175,22 @@ x$longterm_med[x$longterm_med=="OTHER"]<-11
 ```{r eversmoked}
 x$ever_smoked[x$ever_smoked=="NO"]<-0
 x$ever_smoked[x$ever_smoked=="YES"]<-1
+x$ever_smoked[x$ever_smoked=="UNKNOWN"]<-9
+x$ever_smoked[x$ever_smoked=="NA"]<-99
 ```
 
 ```{r bcg tibetborn}
 x$bcg_tibetborn[x$bcg_tibetborn=="NO"]<-0
 x$bcg_tibetborn[x$bcg_tibetborn=="YES"]<-1
-x$bcg_tibetborn[x$bcg_tibetborn=="NA"]<-""
+x$bcg_tibetborn[x$bcg_tibetborn=="UNKNOWN"]<-9
+x$bcg_tibetborn[x$bcg_tibetborn=="NA"]<-99
 ```
 
 ```{r contact with TB in last two years}
 x$contactsch_2yr[x$contactsch_2yr=="NO"]<-0
 x$contactsch_2yr[x$contactsch_2yr=="YES"]<-1
-x$contactsch_2yr[x$contactsch_2yr=="UNKNOWN"]<-2
+x$contactsch_2yr[x$contactsch_2yr=="UNKNOWN"]<-9
+x$contactsch_2yr[x$contactsch_2yr=="NA"]<-99
 ```
 
 ```{r drug sensitivity of Tb case at school}
@@ -196,14 +224,14 @@ x$indexcasesch_count[x$indexcasesch_count=="2"]<-2
 x$indexcasesch_count[x$indexcasesch_count=="3"]<-3
 x$indexcasesch_count[x$indexcasesch_count=="4"]<-3
 x$indexcasesch_count[grepl("^>",x$indexcasesch_count, ignore.case=FALSE)]<-3
-x$indexcasesch_count[x$indexcasesch_count=="NA"]<-""
+x$indexcasesch_count[x$indexcasesch_count=="NA"]<-99
 
 ```
 
 ```{r exposed to TB athome}
 x$contacthome_2yr[x$contacthome_2yr=="NO"]<-0
 x$contacthome_2yr[x$contacthome_2yr=="YES"]<-1
-x$contacthome_2yr[x$contacthome_2yr=="UNKNOWN"]<-2
+x$contacthome_2yr[x$contacthome_2yr=="UNKNOWN"]<-9
 
 
 ```
@@ -230,7 +258,7 @@ x$indexcasehome_count[x$indexcasehome_count=="0"]<-0
 x$indexcasehome_count[x$indexcasehome_count=="1"]<-1
 x$indexcasehome_count[x$indexcasehome_count=="2"]<-2
 x$indexcasehome_count[x$indexcasehome_count=="3"]<-3
-x$indexcasehome_count[x$indexcasehome_count==">3"]<-3
+x$indexcasehome_count[x$indexcasehome_count=="4"]<-3
 x$indexcasehome_count[x$indexcasehome_count>="NA"]<-99
 
 #### CHECK THIS LAST LINE OF CODE
@@ -274,7 +302,7 @@ x$fever_duration[grepl("^l", x$fever_duration, ignore.case = TRUE)]<-1
 x$fever_duration[grepl("^o", x$fever_duration, ignore.case = TRUE)]<-2
 x$fever_duration[grepl("^g", x$fever_duration, ignore.case = TRUE)]<-3
 x$fever_duration[!grepl("^l|^o|^g", x$fever_duration, ignore.case = TRUE)]<-""
-x$fever_duration[x$fever_duration=="NA"]<-4
+x$fever_duration[x$fever_duration=="NA"]<-99
 ```
 
 ```{r presence of night sweats}
@@ -305,9 +333,25 @@ x$tst1_done[x$tst1_done=="PREVTB"]<-2
 x$tst1_done[grepl("^pr", x$tst1_done, ignore.case=TRUE)]<-2
 x$tst1_done[x$tst1_done=="NOT INDICATED"]<-3
 x$tst1_done[x$tst1_done=="NOTINDICATED"]<-3
-x$tst1_done[x$tst1_done=="NA"]<-3
+x$tst1_done[x$tst1_done=="NA"]<-99
 x$tst1_done[x$tst1_done=="REFUSED"]<-4
+
+x$tst1_date[x$tst1_date=="NA"]<-""
+
+x$tst1_result[x$tst1_result=="NEGATIVE"]<-0
+x$tst1_result[x$tst1_result=="POSITIVE"]<-1
+x$tst1_result[x$tst1_result=="NOT DONE"]<-2
+x$tst1_result[x$tst1_result=="UNKNOWN"]<-9
+
+x$tst1_date_read[x$tst1_date_read=="NA"]<-""
+
+x$tst1_adr[x$tst_adr=="NONE"]<-0
+x$tst1_adr[x$tst_adr=="NO"]<-0
+x$tst1_adr[x$tst_adr=="YES"]<-1
+
+
 ```
+
 
 ```{r wheal size}
 x$wheal1_size[x$wheal1_size=="NA"]<-""
@@ -400,24 +444,28 @@ x$xpert2_rif[x$xpert2_rif=="NA"]<-99
 ```
 
 ```{r cxr}
-x$cxr[x$cxr=="NA"]<-""
+x$cxr[x$cxr=="NA"]<-99
+x$cxr[x$cxr=="YES"]<-1
+x$cxr[x$cxr=="NO"]<-0
+
 ```
 
 ```{r cxr result}
 x$cxr_result[x$cxr_result=="NORMAL"]<-0
 x$cxr_result[x$cxr_result=="ABNORMAL"]<-1
-x$cxr_result[x$cxr_result=="NA"]<-""
+x$cxr_result[x$cxr_result=="NA"]<-99
 ```
 
 ```{r diagnosed with active TB}
 x$tb_diagnosed[x$tb_diagnosed=="NO"]<-0
 x$tb_diagnosed[x$tb_diagnosed=="YES"]<-1
-x$tb_diagnosed[x$tb_diagnosed=="NA"]<-""
+x$tb_diagnosed[x$tb_diagnosed=="NA"]<-99
 
 ```
 
 ```{r total num of students}
 x$total_students[x$total_students=="NA"]<-""
+x$total_staff[x$total_staff=="NA"]<-""
 ```
 
 ```{r total staff}
@@ -430,30 +478,14 @@ x$notes_main[x$notes_main=="NA"]<-""
 
 ```{r demographics}
 x$main_database_demographics_complete<-2
-x$main_database_tbinvestigation_complete<-2
-x$active_tb_tbinvestigation_complete<-2
-x$tst_reactive_treatment_complete<-2
-
 ```
 
-```{r active}
-library(plyr)
-library(readr)
-library(dplyr)
-library(tidyverse)
-library(lubridate)
-```
 
 ```{r Active Tb Tbinvestigation}
-x$prev_tb_activetb[x$prev_tb_activetb=="NO"]<-0
-x$prev_tb_activetb[x$prev_tb_activetb=="YES"]<-1
-x$prev_tb_activetb[x$prev_tb_activetb=="UNKNOWN"]<-9
-
-x$prevtb_year_activetb[x$prevtb_year_activetb=="UNKNOWN"]<-9
-x$prevtb_year_activetb[x$prevtb_year_activetb=="NA"]<-99
-
-x$prevtb_site_activetb[x$prevtb_site_activetb=="UNKNOWN"]<-9
-x$prevtb_site_activetb[x$prevtb_site_activetb=="NA"]<-99
+x$prevtb_dst[x$prevtb_dst=="YES"]<-1
+x$prevtb_dst[x$prevtb_dst=="NO"]<-0
+x$prevtb_dst[x$prevtb_dst=="NA"]<-99
+x$prevtb_dst[x$prevtb_dst=="UNKNOWN"]<-9
 
 x$comorbidity[x$comorbidity=="None"]<-0
 x$comorbidity[x$comorbidity=="NONE"]<-0
@@ -463,17 +495,11 @@ x$comorbidity[x$comorbidity=="HTN"]<-2
 x$comorbidity[x$comorbidity=="DM_HTN"]<-3
 x$comorbidity[x$comorbidity=="Other"]<-4
 x$comorbidity[x$comorbidity=="OTHER"]<-4
-x$comorbidity[x$comorbidity=="NA"]<-""
+x$comorbidity[x$comorbidity=="NA"]<-99
 
 x$chronic_meds[x$chronic_meds=="NO"]<-0
 x$chronic_meds[x$chronic_meds=="YES"]<-1
 
-x$ever_smoked_activetb[x$ever_smoked_activetb=="NO"]<-0
-x$ever_smoked_activetb[x$ever_smoked_activetb=="YES"]<-1
-
-x$bcg_tibetborn_activetb[x$bcg_tibetborn_activetb=="NO"]<-0
-x$bcg_tibetborn_activetb[x$bcg_tibetborn_activetb=="YES"]<-1
-  
 x$contact_sch_oneyr[x$contact_sch_oneyr=="NO"]<-0
 x$contact_sch_oneyr[x$contact_sch_oneyr=="YES"]<-1
 x$contact_sch_oneyr[x$contact_sch_oneyr=="UNKNOWN"]<-9
@@ -490,6 +516,13 @@ x$indexcasesch_sputumstatus[grepl("^P",x$indexcasesch_sputumstatus,ignore.case=F
 x$indexcasesch_sputumstatus[grepl("^p",x$indexcasesch_sputumstatus,ignore.case=FALSE)] <- 1
 x$indexcasesch_sputumstatus[x$indexcasesch_sputumstatus=="UNKNOWN"]<-9
 x$indexcasesch_sputumstatus[x$indexcasesch_sputumstatus=="NA"]<-99
+
+
+x$indexcasesch_dst[grepl("^no",x$indexcasesch_dst,ignore.case=FALSE)] <- 0
+x$indexcasesch_dst[grepl("^y",x$indexcasesch_dst,ignore.case=FALSE)] <- 1
+x$indexcasesch_dst[grepl("^u",x$indexcasesch_dst,ignore.case=FALSE)] <- 9
+x$indexcasesch_dst[grepl("^na",x$indexcasesch_dst,ignore.case=FALSE)] <- 99
+
 
 x$indexcasesch_cough[x$indexcasesch_cough=="NO"]<-0
 x$indexcasesch_cough[x$indexcasesch_cough=="YES"]<-1
@@ -509,21 +542,17 @@ x$relation_with_indexcasesch[x$relation_with_indexcasesch=="FRIEND"]<-5
 x$relation_with_indexcasesch[x$relation_with_indexcasesch=="OTHER"]<-6
 x$relation_with_indexcasesch[x$relation_with_indexcasesch=="NA"]<-99
 
-x$indexcasesch_count_activetb[x$indexcasesch_count_activetb=="0"]<-0
-x$indexcasesch_count_activetb[x$indexcasesch_count_activetb=="1"]<-1
-x$indexcasesch_count_activetb[x$indexcasesch_count_activetb=="2"]<-2
-x$indexcasesch_count_activetb[x$indexcasesch_count_activetb=="3"]<-3
-x$indexcasesch_count_activetb[grepl("^>",x$indexcasesch_count_activetb, ignore.case=FALSE)]<-3
-x$indexcasesch_count_activetb[x$indexcasesch_count_activetb=="NA"]<-99
-
-x$contacthome_2yr_activetb[x$contacthome_2yr_activetb=="NO"]<-0
-x$contacthome_2yr_activetb[x$contacthome_2yr_activetb=="YES"]<-1
-x$contacthome_2yr_activetb[x$contacthome_2yr_activetb=="UNKNOWN"]<-2
-
 
 x$indexcasehome_lung[x$indexcasehome_lung=="NO"]<-0
 x$indexcasehome_lung[x$indexcasehome_lung=="YES"]<-1
 x$indexcasehome_lung[x$indexcasehome_lung=="NA"]<-99
+
+x$indexcasehome_dst[grepl("^no",x$indexcasehome_dst,ignore.case=FALSE)] <- 0
+x$indexcasehome_dst[grepl("^y",x$indexcasehome_dst,ignore.case=FALSE)] <- 1
+x$indexcasehome_dst[grepl("^u",x$indexcasehome_dst,ignore.case=FALSE)] <- 9
+x$indexcasehome_dst[grepl("^na",x$indexcasehome_dst,ignore.case=FALSE)] <- 99
+
+
 
 x$indexcasehome_sputumstatus[x$indexcasehome_sputumstatus=="NEGATIVE"]<-0
 x$indexcasehome_sputumstatus[x$indexcasehome_sputumstatus=="POSITIVE"]<-1
@@ -544,114 +573,17 @@ x$relation_with_indexcasehome[x$relation_with_indexcasehome=="GRAND PARENT"]<-3
 x$relation_with_indexcasehome[x$relation_with_indexcasehome=="OTHER"]<-4
 x$relation_with_indexcasehome[x$relation_with_indexcasehome=="NA"]<-99
 
-x$indexcasehome_count_activetb[x$indexcasehome_count_activetb=="0"]<-0
-x$indexcasehome_count_activetb[x$indexcasehome_count_activetb=="1"]<-1
-x$indexcasehome_count_activetb[x$indexcasehome_count_activetb=="2"]<-2
-x$indexcasehome_count_activetb[x$indexcasehome_count_activetb=="3"]<-3
-x$indexcasehome_count_activetb[x$indexcasehome_count_activetb==">3"]<-3
-x$indexcasehome_count_activetb[x$indexcasehome_count_activetb=="NA"]<-""
-
 x$relation_with_indexcasehome[x$relation_with_indexcasehome=="PARENT"]<-1
 x$relation_with_indexcasehome[x$relation_with_indexcasehome=="SIBLING"]<-2
 x$relation_with_indexcasehome[x$relation_with_indexcasehome=="GRANDPARENT"]<-3
 x$relation_with_indexcasehome[x$relation_with_indexcasehome=="GRAND PARENT"]<-3
 x$relation_with_indexcasehome[x$relation_with_indexcasehome=="OTHER"]<-4
 x$relation_with_indexcasehome[x$relation_with_indexcasehome=="NA"]<-99
-```
 
-```{r Active TB Cough}
-x$cough_activetb[grepl("NA",x$cough_activetb,ignore.case=FALSE)] <- ""
-x$cough_activetb[grepl("^N",x$cough_activetb,ignore.case=FALSE)] <- 0
-x$cough_activetb[grepl("^Y",x$cough_activetb,ignore.case=FALSE)] <- 1
-x$cough_activetb[grepl("^n",x$cough_activetb,ignore.case=FALSE)] <- 0
-x$cough_activetb[grepl("^y",x$cough_activetb,ignore.case=FALSE)] <- 1
-
-x$coughduration_wks_activetb[grepl("NA",x$coughduration_wks_activetb,ignore.case=FALSE)] <-99
-x$coughduration_wks_activetb[grepl("^GE",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 4
-x$coughduration_wks_activetb[grepl("^LT",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 1
-x$coughduration_wks_activetb[grepl("^ONE-TW",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 2
-x$coughduration_wks_activetb[grepl("^1-2",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 2
-x$coughduration_wks_activetb[grepl("^2-3",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 3
-x$coughduration_wks_activetb[grepl("^TWO-THRE",x$coughduration_wks_activetb,ignore.case=FALSE)] <- 3
-
-x$productive_cough_activetb[grepl("NA",x$productive_cough_activetb,ignore.case=FALSE)] <-99
-x$productive_cough_activetb[grepl("^N",x$productive_cough_activetb,ignore.case=FALSE)] <- 0
-x$productive_cough_activetb[grepl("^n",x$productive_cough_activetb,ignore.case=FALSE)] <- 0
-x$productive_cough_activetb[grepl("^Y",x$productive_cough_activetb,ignore.case=FALSE)] <- 1
-x$productive_cough_activetb[grepl("^y",x$productive_cough_activetb,ignore.case=FALSE)] <- 1
-
-x$blood_sputum_activetb[grepl("NA",x$blood_sputum_activetb,ignore.case=FALSE)] <-99
-x$blood_sputum_activetb[grepl("^N",x$blood_sputum_activetb,ignore.case=FALSE)] <- 0
-x$blood_sputum_activetb[grepl("^n",x$blood_sputum_activetb,ignore.case=FALSE)] <- 0
-x$blood_sputum_activetb[grepl("^Y",x$blood_sputum_activetb,ignore.case=FALSE)] <- 1
-x$blood_sputum_activetb[grepl("^y",x$blood_sputum_activetb,ignore.case=FALSE)] <- 1
-
-x$fever_activetb[grepl("NA",x$fever_activetb,ignore.case=FALSE)] <- ""
-x$fever_activetb[grepl("^N",x$fever_activetb,ignore.case=FALSE)] <- 0
-x$fever_activetb[grepl("^n",x$fever_activetb,ignore.case=FALSE)] <- 0
-x$fever_activetb[grepl("^Y",x$fever_activetb,ignore.case=FALSE)] <- 1
-x$fever_activetb[grepl("^y",x$fever_activetb,ignore.case=FALSE)] <- 1
-
-x$fever_duration_activetb[grepl("NA",x$fever_duration_activetb,ignore.case=FALSE)] <- 4
-x$fever_duration_activetb[grepl("^GE",x$fever_duration_activetb,ignore.case=FALSE)] <- 3
-x$fever_duration_activetb[grepl("^LT",x$fever_duration_activetb,ignore.case=FALSE)] <- 1
-x$fever_duration_activetb[grepl("^ONE",x$fever_duration_activetb,ignore.case=FALSE)] <- 2
-x$fever_duration_activetb[grepl("^1",x$fever_duration_activetb,ignore.case=FALSE)] <- 2
-
-x$nightsweats_2wks_activetb[grepl("NA",x$nightsweats_2wks_activetb,ignore.case=TRUE)] <- ""
-x$nightsweats_2wks_activetb[grepl("^N",x$nightsweats_2wks_activetb,ignore.case=TRUE)] <- 0
-x$nightsweats_2wks_activetb[grepl("^Y",x$nightsweats_2wks_activetb,ignore.case=TRUE)] <- 1
-
-
-x$wtloss_1month_activetb[grepl("NA",x$wtloss_1month_activetb,ignore.case=TRUE)] <- ""
-x$wtloss_1month_activetb[grepl("^N",x$wtloss_1month_activetb,ignore.case=TRUE)] <- 0
-x$wtloss_1month_activetb[grepl("^Y",x$wtloss_1month_activetb,ignore.case=TRUE)] <- 1
-
-x$fatigue_last2wks_activetb[grepl("NA",x$fatigue_last2wks_activetb,ignore.case=TRUE)] <- ""
-x$fatigue_last2wks_activetb[grepl("^N",x$fatigue_last2wks_activetb,ignore.case=TRUE)] <- 0
-x$fatigue_last2wks_activetb[grepl("^Y",x$fatigue_last2wks_activetb,ignore.case=TRUE)] <- 1
-
-x$tst1_done_activeb[x$tst1_done_activetb=="YES"]<-1
-x$tst1_done_activeb[x$tst1_done_activetb=="PREVTB"]<-2
-x$tst1_done_activeb[x$tst1_done_activetb=="PREV TB"]<-2
-x$tst1_done_activeb[x$tst1_done_activetb=="NOT INDICATED"]<-3
-x$tst1_done_activeb[x$tst1_done_activetb=="REFUSED"]<-4
-
-x$tst1_result[x$tst1_result=="NEGATIVE"]<-0
-x$tst1_result[x$tst1_result=="POSITIVE"]<-1
-x$tst1_result[x$tst1_result=="NOT DONE"]<-2
-x$tst1_result[x$tst1_result=="UNKNOWN"]<-9
-
-x$tst_adr[x$tst_adr=="NONE"]<-0
-x$tst_adr[x$tst_adr=="NO"]<-0
-x$tst_adr[x$tst_adr=="YES"]<-1
-
-
-x$xpert_specimen[grepl("NA",x$xpert_specimen,ignore.case=TRUE)] <-99
-x$xpert_specimen[grepl("^SPU",x$xpert_specimen,ignore.case=TRUE)] <- 1
-x$xpert_specimen[grepl("^GASTRIC",x$xpert_specimen,ignore.case=TRUE)] <- 2
-x$xpert_specimen[x$xpert_specimen=="GASTRIC ASPIRATION"]<-2
-x$xpert_specimen[grepl("^GA",x$xpert_specimen,ignore.case=TRUE)] <- 2
-x$xpert_specimen[grepl("^PU",x$xpert_specimen,ignore.case=TRUE)] <- 3
-x$xpert_specimen[grepl("^PLEURAL",x$xpert_specimen,ignore.case=TRUE)] <- 4
-x$xpert_specimen[grepl("^UR",x$xpert_specimen,ignore.case=TRUE)] <- 5
-x$xpert_specimen[grepl("^CSF",x$xpert_specimen,ignore.case=TRUE)] <- 6
-
-x$xpert_result[grepl("NA",x$xpert_result,ignore.case=TRUE)] <-99
-x$xpert_result[grepl("^N",x$xpert_result,ignore.case=TRUE)] <- 0
-x$xpert_result[grepl("^D",x$xpert_result,ignore.case=TRUE)] <- 1
-x$xpert_result[grepl("^P",x$xpert_result,ignore.case=TRUE)] <- 1
-
-x$xpert_mtb[grepl("NA",x$xpert_mtb,ignore.case=TRUE)] <-99
-x$xpert_mtb[grepl("^V",x$xpert_mtb,ignore.case=TRUE)] <- 0
-x$xpert_mtb[grepl("^L",x$xpert_mtb,ignore.case=TRUE)] <- 1
-x$xpert_mtb[grepl("^M",x$xpert_mtb,ignore.case=TRUE)] <- 2
-x$xpert_mtb[grepl("^H",x$xpert_mtb,ignore.case=TRUE)] <- 3
-
-x$xpert_rif[grepl("NA",x$xpert_rif,ignore.case=TRUE)] <-99
-x$xpert_rif[grepl("^S",x$xpert_rif,ignore.case=TRUE)] <- 0
-x$xpert_rif[grepl("^R",x$xpert_rif,ignore.case=TRUE)] <- 1
-x$xpert_rif[grepl("^I",x$xpert_rif,ignore.case=TRUE)] <- 2
+x$cxr_date[x$cxr_date=="NA"]<-""
+x$cxr_finding[x$cxr_finding=="NA"]<-""
+x$followup_advised[x$followup_advised=="NA"]<-""
+x$followup_complete[x$followup_complete=="NA"]<-""
 
 x$tb_diagnosis[x$tb_diagnosis=="NO"]<-0
 x$tb_diagnosis[x$tb_diagnosis=="YES"]<-1
@@ -661,6 +593,8 @@ x$sch_mon_prev1yr[x$sch_mon_prev1yr=="BYLAKUPPE"]<-19
 x$sch_mon_prev1yr[x$sch_mon_prev1yr=="SELAQUI"]<-12
 x$sch_mon_prev1yr[x$sch_mon_prev1yr=="GTCV"]<-3
 x$sch_mon_prev1yr[x$sch_mon_prev1yr=="LTCV"]<-1
+
+x$doh_index_no[x$doh_index_no=="NA"]<-NA
 
 x$patient_type[x$patient_type=="NEW"]<-1
 x$patient_type[grepl("^RE", x$patient_type, ignore.case = TRUE)]<-2
@@ -674,7 +608,7 @@ x$disease_site[grepl("^AB",x$disease_site,ignore.case=TRUE)] <-5
 x$disease_site[grepl("^SP",x$disease_site,ignore.case=TRUE)] <-6
 x$disease_site[grepl("^BONE",x$disease_site,ignore.case=TRUE)] <-7
 x$disease_site[grepl("OTHER BONE",x$disease_site,ignore.case=TRUE)] <-7
-x$disease_site[grepl("OTHER",x$disease_site,ignore.case=TRUE)] <-9
+x$disease_site[grepl("OTHER",x$disease_site,ignore.case=TRUE)] <-8
 
 x$category[grepl("NA",x$category,ignore.case=TRUE)] <- ""
 x$category[grepl("^CAT-1",x$category,ignore.case=TRUE)] <- 1
@@ -682,6 +616,9 @@ x$category[grepl("^CAT-2",x$category,ignore.case=TRUE)] <- 2
 x$category[grepl("^CAT-4",x$category,ignore.case=TRUE)] <- 3
 x$category[grepl("^IN",x$category,ignore.case=TRUE)] <- 4
 x$category[grepl("^NT",x$category,ignore.case=TRUE)] <- 5
+
+x$place_rx_start[x$place_rx_start=="NA"]<-""
+x$date_rx_start[x$date_rx_start=="NA"]<-""
 
 x$diagnostic_smear[grepl("^NA",x$diagnostic_smear,ignore.case=TRUE)] <- ""
 x$diagnostic_smear[grepl("^UNKNO",x$diagnostic_smear,ignore.case=TRUE)] <- 9
@@ -796,6 +733,8 @@ x$end_rx_smear[grepl("^NOT",x$end_rx_smear,ignore.case=TRUE)] <- 2
 x$end_rx_smear[grepl("^NEG",x$end_rx_smear,ignore.case=TRUE)] <- 0
 x$end_rx_smear[grepl("^POS",x$end_rx_smear,ignore.case=TRUE)] <- 1
 
+x$date_rx_stoppped[x$date_rx_stopped=="NA"]<-""
+
 
 x$rx_outcome[grepl("^NA",x$rx_outcome,ignore.case=TRUE)] <- ""
 x$rx_outcome[grepl("^CU",x$rx_outcome,ignore.case=TRUE)] <- 1
@@ -821,6 +760,8 @@ x$prev_therapy[grepl("^NOT RE",x$prev_therapy,ignore.case=TRUE)]<-5
 x$prev_therapy[grepl("^A",x$prev_therapy,ignore.case=TRUE)]<-6
 x$prev_therapy[grepl("^TB",x$prev_therapy,ignore.case=TRUE)]<-6
 
+x$prev_ther_no[x$prev_ther_no=="NA"]<-""
+
 x$prev_therapy_reg[grepl("NA",x$prev_therapy_reg,ignore.case=TRUE)]<-""
 x$prev_therapy_reg[grepl("4R",x$prev_therapy_reg,ignore.case=TRUE)]<-1
 x$prev_therapy_reg[grepl("3HR",x$prev_therapy_reg,ignore.case=TRUE)]<-2
@@ -828,14 +769,47 @@ x$prev_therapy_reg[grepl("6H",x$prev_therapy_reg,ignore.case=TRUE)]<-3
 x$prev_therapy_reg[grepl("3HP",x$prev_therapy_reg,ignore.case=TRUE)]<-4
 x$prev_therapy_reg[grepl("NA",x$prev_therapy_reg,ignore.case=TRUE)]<-99
 
+x$prevther_startdate[x$prevther_startdate=="NA"]<-""
+
 x$prevther_adr[grepl("NA",x$prevther_adr,ignore.case=TRUE)]<-99
 x$prevther_adr[grepl("^N",x$prevther_adr,ignore.case=TRUE)]<-0
 x$prevther_adr[grepl("^Y",x$prevther_adr,ignore.case=TRUE)]<-1
+
+x$typeofadr[x$typeofadr=="NA"]<-""
 
 x$culprit_drug[grepl("NA",x$culprit_drug ,ignore.case=TRUE)]<-99
 x$culprit_drug[grepl("Rif",x$culprit_drug,ignore.case=TRUE)]<-1
 x$culprit_drug[grepl("^I",x$culprit_drug,ignore.case=TRUE)]<-2
 x$culprit_drug[grepl("Rif-Inh",x$culprit_drug,ignore.case=TRUE)]<-3
+
+x$ptsa_gi[x$ptsa_gi=="NO"]<-0
+x$ptsa_gi[x$ptsa_gi=="YES"]<-1
+x$ptsa_gi[x$ptsa_gi=="NA"]<-99
+
+x$ptsa_red[x$ptsa_red=="NO"]<-0
+x$ptsa_red[x$ptsa_red=="YES"]<-1
+x$ptsa_red[x$ptsa_red=="NA"]<-99
+
+x$ptsa_sleep[x$ptsa_sleep=="NO"]<-0
+x$ptsa_sleep[x$ptsa_sleep=="YES"]<-1
+x$ptsa_sleep[x$ptsa_sleep=="NA"]<-99
+
+x$ptsa_head[x$ptsa_head=="NO"]<-0
+x$ptsa_head[x$ptsa_head=="YES"]<-1
+x$ptsa_head[x$ptsa_head=="NA"]<-99
+
+x$ptsa_jaundice[x$ptsa_jaundice=="NO"]<-0
+x$ptsa_jaundice[x$ptsa_jaundice=="YES"]<-1
+x$ptsa_jaundice[x$ptsa_jaundice=="NA"]<-99
+
+x$ptsa_rash[x$ptsa_rash=="NO"]<-0
+x$ptsa_rash[x$ptsa_rash=="YES"]<-1
+x$ptsa_rash[x$ptsa_rash=="NA"]<-99
+
+x$ptsa_hepa[x$ptsa_hepa=="NO"]<-0
+x$ptsa_hepa[x$ptsa_hepa=="YES"]<-1
+x$ptsa_hepa[x$ptsa_hepa=="NA"]<-99
+
 
 x$totalbil_1[grepl("NA",x$totalbil_1 ,ignore.case=TRUE)]<-""
 x$directl_1[grepl("NA",x$directl_1,ignore.case=TRUE)]<-""
@@ -858,6 +832,9 @@ x$prevtherapy_held[grepl("NA",x$prevtherapy_held,ignore.case=TRUE)]<-99
 x$prevtherapy_held[grepl("^N",x$prevtherapy_held,ignore.case=TRUE)]<-0
 x$prevtherapy_held[grepl("^Y",x$prevtherapy_held,ignore.case=TRUE)]<-1
 
+x$date_prevther_held[x$date_prevther_held=="NA"]<-""
+x$date_prevther_restarted[x$date_prevther_restarted=="NA"]<-""
+
 x$prev_therapy_revised[grepl("NA",x$prev_therapy_revised,ignore.case=TRUE)]<-99
 x$prev_therapy_revised[grepl("^N",x$prev_therapy_revised,ignore.case=TRUE)]<-0
 x$prev_therapy_revised[grepl("^Y",x$prev_therapy_revised,ignore.case=TRUE)]<-1
@@ -876,15 +853,17 @@ x$prevther_outcome[grepl("^A",x$prevther_outcome,ignore.case=TRUE)]<-3
 x$prevther_outcome[grepl("TB",x$prevther_outcome,ignore.case=TRUE)]<-3
 x$prevther_outcome[!grepl("NA|^COM|^L|^A|TB", x$prevther_outcome,ignore.case=TRUE)]<- 4
 
+x$if_other_specify[x$if_other_specify=="NA"]<-""
+
 x$prevther_stopped_premature[grepl("NA",x$prevther_stopped_premature,ignore.case=TRUE)]<-99
 x$prevther_stopped_premature[grepl("^N",x$prevther_stopped_premature,ignore.case=TRUE)]<-0
 x$prevther_stopped_premature[grepl("^Y",x$prevther_stopped_premature,ignore.case=TRUE)]<-1
 
-x$prevther_stopped_reason[grepl("NA",x$prevther_stopped_reason,ignore.case=TRUE)]<-""
+x$prevther_stopped_reason[grepl("NA",x$prevther_stopped_reason,ignore.case=TRUE)]<-99
 x$prevther_stopped_reason[grepl("^H",x$prevther_stopped_reason,ignore.case=TRUE)]<- 1
 x$prevther_stopped_reason[grepl("^other tox",x$prevther_stopped_reason,ignore.case=TRUE)]<- 2
 x$prevther_stopped_reason[grepl("^discont",x$prevther_stopped_reason,ignore.case=TRUE)]<- 3
-x$prevther_stopped_reason[!grepl("NA|^H|^other tox|^discont", x$prevther_stopped_reason,ignore.case=TRUE)]<- 4
+x$prevther_stopped_reason[!grepl("^H|^other tox|^discont", x$prevther_stopped_reason,ignore.case=TRUE)]<- 4
 
 x$tst_reactive_treatment_complete[x$tst_reactive_treatment_complete=="INCOMPLETE"]<-0
 x$tst_reactive_treatment_complete[x$tst_reactive_treatment_complete=="UNVERIFIED"]<-1
