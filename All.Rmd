@@ -14,7 +14,7 @@ library(tidyverse)
 library(lubridate)
 
 
-x=read.csv("C:/Users/g_pun/Dropbox/ZeroTB/GTCV/ACF_2018_clean.csv",stringsAsFactors = FALSE, na.strings=TRUE)
+x=read.csv("C:/Users/g_pun/Dropbox/ZeroTB/STCV/CT_TST_REAC.csv",stringsAsFactors = FALSE, na.strings=TRUE)
 
 
 ##Insitute variable renaming
@@ -25,6 +25,8 @@ x$institute[x$institute=="GTCV"]<-3
 x$institute[x$institute=="TCV GOPUR"]<-3
 x$institute[x$institute=="LTCV"]<-1
 x$institute[x$institute=="LTCV"]<-1
+x$institute[x$institute=="STSP"]<-10
+x$institute[x$institute=="STCV"]<-4
 ```
 
 ```{r age}
@@ -42,13 +44,27 @@ x$class_section[x$class_section=="NA"]<-""
 ```{r main TB Dorm}
 
 x$dorm_[!grepl("^B|^H|^G",x$dorm,ignore.case=TRUE)] <- ""
-x$dorm[grepl("^H",x$dorm,ignore.case=TRUE)] <- 1
+x$dorm[grepl("^H-",x$dorm,ignore.case=TRUE)] <- 1
 x$dorm[grepl("^G",x$dorm,ignore.case=TRUE)] <- 3
 x$dorm[grepl("^B",x$dorm,ignore.case=TRUE)] <- 2
-x$dorm[grepl("^s", x$dorm, ignore.case = TRUE)]<-5
-x$dorm[grepl("^d", x$dorm, ignore.case = TRUE)]<-4
-x$dorm[grepl("^M", x$dorm, ignore.case=TRUE)]<-6
-x$dorm[grepl("^Y", x$dorm, ignore.case=TRUE)]<-7
+x$dorm[grepl("^sta", x$dorm, ignore.case = TRUE)]<-5
+x$dorm[grepl("^da", x$dorm, ignore.case = TRUE)]<-4
+x$dorm[grepl("^mgh", x$dorm, ignore.case=TRUE)]<-6
+x$dorm[grepl("^ygh", x$dorm, ignore.case=TRUE)]<-7
+x$dorm[grepl("^sos", x$dorm, ignore.case=TRUE)]<-8
+x$dorm[grepl("^ygy", x$dorm, ignore.case=TRUE)]<-10
+x$dorm[grepl("^d/s", x$dorm, ignore.case=TRUE)]<-11
+x$dorm[grepl("^s/c", x$dorm, ignore.case=TRUE)]<-12
+x$dorm[grepl("^lgy", x$dorm, ignore.case=TRUE)]<-13
+x$dorm[grepl("^sam", x$dorm, ignore.case=TRUE)]<-14
+x$dorm[x$dorm==""]<-9
+x$dorm[x$dorm=="NA"]<-99
+
+
+
+
+
+
 ```
 
 ```{r occuapation}
@@ -82,9 +98,14 @@ x$birth_place[x$birth_place=="TIBET"]<-2
 x$birth_place[x$birth_place=="NEPAL"]<-3
 x$birth_place[x$birth_place=="BHUTAN"]<-4
 x$birth_place[x$birth_place=="USA"]<-5
+x$birth_place[x$birth_place=="CANADA"]<-6
 
 x$arrivalyear_fromtibet[x$arrivalyear_fromtibet=="NA"]<-""
 x$ethnicity[x$ethnicity=="NA"]<-""
+```
+
+
+```{r run}
 x$address_settlement_city[x$address_settlement_city=="NA"]<-""
 x$weight_kg[x$weight_kg=="NA"]<-""
 ```
@@ -132,6 +153,7 @@ x$hepb[x$hepb=="NO"]<-0
 x$hepb[x$hepb=="YES"]<-1
 x$hepb[x$hepb=="no"]<-0
 x$hepb[x$hepb=="yes"]<-1
+
 ```
 
 ```{r preg_breastfeed}
@@ -338,6 +360,10 @@ x$tst1_done[x$tst1_done=="REFUSED"]<-4
 
 x$tst1_date[x$tst1_date=="NA"]<-""
 
+```
+
+```{r main}
+
 x$tst1_result[x$tst1_result=="NEGATIVE"]<-0
 x$tst1_result[x$tst1_result=="POSITIVE"]<-1
 x$tst1_result[x$tst1_result=="NOT DONE"]<-2
@@ -345,9 +371,11 @@ x$tst1_result[x$tst1_result=="UNKNOWN"]<-9
 
 x$tst1_date_read[x$tst1_date_read=="NA"]<-""
 
-x$tst1_adr[x$tst_adr=="NONE"]<-0
-x$tst1_adr[x$tst_adr=="NO"]<-0
-x$tst1_adr[x$tst_adr=="YES"]<-1
+x$tst1_adr[x$tst1_adr=="NONE"]<-0
+x$tst1_adr[x$tst1_adr=="NO"]<-0
+x$tst1_adr[x$tst1_adr=="YES"]<-1
+x$tst1_adr[x$tst1_adr=="NOT DETECTED"]<-0
+x$tst1_adr[x$tst1_adr=="DETECTED"]<-1
 
 
 ```
@@ -412,6 +440,7 @@ x$xpert2_specimen[x$xpert2_specimen=="PLEURAL FLUID"]<-4
 x$xpert2_specimen[x$xpert2_specimen=="URINE"]<-5
 x$xpert2_specimen[x$xpert2_specimen=="CSF"]<-6
 x$xpert2_specimen[x$xpert2_specimen=="NA"]<-99
+x$xpert2_specimen[x$xpert2_specimen=="YES"]<-7
 ```
 
 ```{r result of xpert2}
@@ -420,6 +449,8 @@ x$xpert2_result[x$xpert2_result=="NEGATIVE"]<-0
 x$xpert2_result[x$xpert2_result=="DETECTED"]<-1
 x$xpert2_result[x$xpert2_result=="POSITIVE"]<-1
 x$xpert2_result[x$xpert2_result=="NA"]<-99
+x$xpert2_result[x$xpert2_result=="ABNORMAL"]<-2
+x$xpert2_result[x$xpert2_result=="NORMAL"]<-3
 ```
 
 
@@ -474,6 +505,7 @@ x$total_monks_nuns[x$total_monks_nuns=="NA"]<-""
 
 ```{r notes main}
 x$notes_main[x$notes_main=="NA"]<-""
+x$notes[x$notes=="NA"]<-""
 ```
 
 ```{r demographics}
@@ -587,12 +619,16 @@ x$followup_complete[x$followup_complete=="NA"]<-""
 
 x$tb_diagnosis[x$tb_diagnosis=="NO"]<-0
 x$tb_diagnosis[x$tb_diagnosis=="YES"]<-1
+```
+
+```{r active}
 
 x$sch_mon_prev1yr[x$sch_mon_prev1yr=="TCV LADHAK"]<-20
 x$sch_mon_prev1yr[x$sch_mon_prev1yr=="BYLAKUPPE"]<-19
 x$sch_mon_prev1yr[x$sch_mon_prev1yr=="SELAQUI"]<-12
 x$sch_mon_prev1yr[x$sch_mon_prev1yr=="GTCV"]<-3
 x$sch_mon_prev1yr[x$sch_mon_prev1yr=="LTCV"]<-1
+x$sch_mon_prev1yr[x$sch_mon_prev1yr=="STS POANTA"]<-10
 
 x$doh_index_no[x$doh_index_no=="NA"]<-NA
 
@@ -620,11 +656,13 @@ x$category[grepl("^NT",x$category,ignore.case=TRUE)] <- 5
 x$place_rx_start[x$place_rx_start=="NA"]<-""
 x$date_rx_start[x$date_rx_start=="NA"]<-""
 
+
 x$diagnostic_smear[grepl("^NA",x$diagnostic_smear,ignore.case=TRUE)] <- ""
 x$diagnostic_smear[grepl("^UNKNO",x$diagnostic_smear,ignore.case=TRUE)] <- 9
 x$diagnostic_smear[grepl("^P",x$diagnostic_smear,ignore.case=TRUE)] <- 1
 x$diagnostic_smear[grepl("^N",x$diagnostic_smear,ignore.case=TRUE)] <- 0
-x$diagnostic_smear[grepl("^NOT",x$diagnostic_smear,ignore.case=TRUE)] <- 2
+  x$diagnostic_smear[grepl("^NOT",x$diagnostic_smear,ignore.case=TRUE)] <- 2
+x$diagnostic_smear[x$diagnostic_smear=="SCANTY"]<-3
 
 x$hiv[grepl("^NA",x$hiv,ignore.case=TRUE)] <- ""
 x$hiv[grepl("^N",x$hiv,ignore.case=TRUE)] <- 0
@@ -845,6 +883,9 @@ x$revised_prevther_reg[grepl("^3HR",x$revised_prevther_reg,ignore.case=TRUE)]<-2
 x$revised_prevther_reg[grepl("^6",x$revised_prevther_reg,ignore.case=TRUE)]<-3
 x$revised_prevther_reg[grepl("^3HP",x$revised_prevther_reg,ignore.case=TRUE)]<-4
 x$revised_prevther_reg[!grepl("^4|^3HR|^6|^3HP|^NA", x$revised_prevther_reg,ignore.case=TRUE)]<- ""
+```
+
+```{r reactive cont}
 
 x$prevther_outcome[grepl("NA",x$prevther_outcome,ignore.case=TRUE)]<-""
 x$prevther_outcome[grepl("^COM",x$prevther_outcome,ignore.case=TRUE)]<-1
@@ -854,6 +895,9 @@ x$prevther_outcome[grepl("TB",x$prevther_outcome,ignore.case=TRUE)]<-3
 x$prevther_outcome[!grepl("NA|^COM|^L|^A|TB", x$prevther_outcome,ignore.case=TRUE)]<- 4
 
 x$if_other_specify[x$if_other_specify=="NA"]<-""
+```
+
+```{r reactive cont2}
 
 x$prevther_stopped_premature[grepl("NA",x$prevther_stopped_premature,ignore.case=TRUE)]<-99
 x$prevther_stopped_premature[grepl("^N",x$prevther_stopped_premature,ignore.case=TRUE)]<-0
@@ -868,8 +912,6 @@ x$prevther_stopped_reason[!grepl("^H|^other tox|^discont", x$prevther_stopped_re
 x$tst_reactive_treatment_complete[x$tst_reactive_treatment_complete=="INCOMPLETE"]<-0
 x$tst_reactive_treatment_complete[x$tst_reactive_treatment_complete=="UNVERIFIED"]<-1
 x$tst_reactive_treatment_complete[x$tst_reactive_treatment_complete=="COMPLETE"]<-2
-
-
 ```
 
 ```{r dates}
@@ -889,7 +931,7 @@ x$tst_reactive_treatment_complete<-2
 
 
 ```{r export}
-write.csv(x,"C:/Users/g_pun/Dropbox/ZeroTB/GTCV/ACF_2018_clean.csv", na="")
+write.csv(x,"C:/Users/g_pun/Dropbox/ZeroTB/STCV/CONTACT_TRACE_clean.csv", na="")
 ```
 
 
